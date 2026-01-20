@@ -1,17 +1,18 @@
 {
   "$schema": "https://json.schemastore.org/package.json",
-  "name": "magi-benchmark",
+  "name": "coding-agent-benchmark",
   "version": "0.1.0",
-  "description": "Benchmark suite for MAGI - AI coding agent evaluation system",
+  "description": "Benchmark suite for evaluating AI coding agents (Claude Code, Cursor, Aider, OpenHands, etc.)",
   "type": "module",
   "main": "src/index.ts",
   "bin": {
-    "magi-benchmark": "./bin/magi-benchmark"
+    "agent-benchmark": "./bin/magi-benchmark"
   },
   "exports": {
     ".": "./src/index.ts",
     "./suites/*": "./src/suites/*.ts",
-    "./types": "./src/types.ts"
+    "./types": "./src/types.ts",
+    "./agent": "./src/agent.ts"
   },
   "scripts": {
     "dev": "bun run src/cli.ts",
@@ -19,27 +20,9 @@
     "typecheck": "tsc --noEmit",
     "build": "bun build src/index.ts --outdir dist --target node",
     "list": "bun run src/cli.ts list",
-    "run:code": "bun run src/cli.ts run code-generation",
-    "run:trinity": "bun run src/cli.ts run trinity-protocol",
-    "run:task": "bun run src/cli.ts run task-completion",
-    "run:agent": "bun run src/cli.ts run agent-comparison",
-    "run:all": "bun run src/cli.ts run-all",
-    "leaderboard": "bun run src/cli.ts leaderboard",
-    "compare": "bun run src/cli.ts compare"
-  },
-  "peerDependencies": {
-    "magi": ">=0.1.0"
-  },
-  "peerDependenciesMeta": {
-    "magi": {
-      "optional": true
-    }
+    "leaderboard": "bun run src/cli.ts leaderboard"
   },
   "dependencies": {
-    "@ai-sdk/anthropic": "^2.0.57",
-    "@ai-sdk/google": "^2.0.52",
-    "@ai-sdk/openai": "^2.0.89",
-    "ai": "^5.0.119",
     "glob": "^13.0.0",
     "yargs": "^18.0.0",
     "zod": "^3.23.8"
@@ -57,15 +40,18 @@
     "dist"
   ],
   "keywords": [
-    "magi",
     "benchmark",
     "ai",
     "coding-agent",
-    "evaluation"
+    "evaluation",
+    "claude-code",
+    "cursor",
+    "aider",
+    "openhands"
   ],
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/devswha/magi-benchmark.git"
+    "url": "git+https://github.com/devswha/coding-agent-benchmark.git"
   }
 }

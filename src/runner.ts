@@ -1,10 +1,8 @@
 /**
- * MAGI Benchmark Runner
- * Executes benchmark suites and collects results
+ * Benchmark Runner
  *
- * This runner can work in two modes:
- * 1. With MAGI installed: Full integration with MAGI system
- * 2. Standalone: Test case definition only (no execution)
+ * Executes benchmark suites against any coding agent.
+ * Agent-agnostic design allows testing Claude Code, Cursor, Aider, etc.
  */
 
 import type {
@@ -13,11 +11,10 @@ import type {
   BenchmarkConfig,
   BenchmarkRunResult,
   BenchmarkSuiteResult,
-  TrinityBenchmarkMetrics,
   CategoryScore,
   BenchmarkCategory,
 } from "./types"
-import { loadMagiIntegration, type MagiSystemInterface } from "./magi-integration"
+import type { Agent, AgentConfig, AgentResponse } from "./agent"
 import { writeFile, mkdir } from "fs/promises"
 import { join } from "path"
 
@@ -28,59 +25,37 @@ const DEFAULT_CONFIG: BenchmarkConfig = {
   verbose: false,
   outputDir: "./results",
   saveResults: true,
-  enableTrinity: true,
+  enableTrinity: false,
   forceTrinityReview: false,
 }
 
 export class BenchmarkRunner {
   private config: BenchmarkConfig
-  private magi: MagiSystemInterface | null = null
+  private agent: Agent | null = null
 
   constructor(config: Partial<BenchmarkConfig> = {}) {
     this.config = { ...DEFAULT_CONFIG, ...config }
   }
 
   /**
-   * Initialize MAGI system for benchmarking
-   * Requires MAGI to be installed as a peer dependency
+   * Set the agent to benchmark
    */
-  async initialize(): Promise<void> {
-    const integration = await loadMagiIntegration()
-
-    if (!integration) {
-      throw new Error(
-        "MAGI package not found. Install with: bun add magi\n" +
-        "Or run benchmarks from within the MAGI repository."
-      )
-    }
-
-    // Use environment variables for model configuration
-    const unifiedModel = process.env.MAGI_UNIFIED_MODEL
-
-    this.magi = await integration.createSystem({
-      enableTrinity: this.config.enableTrinity,
-      ...(unifiedModel ? {
-        models: {
-          melchior: { provider: "anthropic", model: unifiedModel },
-          balthasar: { provider: "anthropic", model: unifiedModel },
-          caspar: { provider: "anthropic", model: unifiedModel },
-        }
-      } : {})
-    })
-
-    console.log("[Benchmark] MAGI system initialized")
+  setAgent(agent: Agent): void {
+    this.agent = agent
   }
 
   /**
    * Run a complete benchmark suite
    */
-  async runSuite(suite: BenchmarkSuite): Promise<BenchmarkSuiteResult> {
-    if (!this.magi) {
-      await this.initialize()
+  async runSuite(suite: BenchmarkSuite, agent?: Agent): Promise<BenchmarkSuiteResult> {
+    const targetAgent = agent || this.agent
+    if (!targetAgent) {
+      throw new Error("No agent configured. Call setAgent() or pass agent to runSuite().")
     }
 
     const startTime = Date.now()
     console.log(`\n[Benchmark] Starting suite: ${suite.name}`)
+    console.log(`[Benchmark] Agent: ${targetAgent.name}`)
     console.log(`[Benchmark] Total cases: ${suite.cases.length}`)
 
     // Filter cases based on config
@@ -93,7 +68,7 @@ export class BenchmarkRunner {
 
     for (const testCase of filteredCases) {
       try {
-        const result = await this.runCase(testCase, suite.defaultTimeout)
+        const result = await this.runCase(testCase, targetAgent, suite.defaultTimeout)
         results.push(result)
         completedCount++
 
@@ -108,7 +83,7 @@ export class BenchmarkRunner {
     }
 
     const endTime = Date.now()
-    const suiteResult = this.aggregateResults(suite, results, endTime - startTime)
+    const suiteResult = this.aggregateResults(suite, results, endTime - startTime, targetAgent.name)
 
     // Save results
     if (this.config.saveResults) {
@@ -124,27 +99,23 @@ export class BenchmarkRunner {
    */
   async runCase(
     testCase: BenchmarkCase,
+    agent: Agent,
     suiteTimeout?: number
   ): Promise<BenchmarkRunResult> {
     const timeout = testCase.timeoutMs || suiteTimeout || this.config.defaultTimeoutMs
     const startTime = Date.now()
 
     try {
-      // Process message through MAGI
+      // Execute through agent
       const response = await Promise.race([
-        this.magi!.processMessage(testCase.prompt),
+        agent.execute(testCase.prompt, { timeoutMs: timeout }),
         this.createTimeoutPromise(timeout),
       ])
 
-      const durationMs = Date.now() - startTime
+      const durationMs = response.durationMs || (Date.now() - startTime)
 
       // Validate output
       const validation = this.validateOutput(testCase, response.content)
-
-      // Extract Trinity metrics if deliberation occurred
-      const trinityMetrics = response.deliberation
-        ? this.extractTrinityMetrics(response.deliberation, durationMs)
-        : undefined
 
       return {
         caseId: testCase.id,
@@ -158,7 +129,6 @@ export class BenchmarkRunner {
         output: response.content,
         validationDetails: validation.details,
         errors: validation.errors,
-        trinityMetrics,
       }
     } catch (error) {
       return this.createErrorResult(testCase, error, Date.now() - startTime)
@@ -242,33 +212,6 @@ export class BenchmarkRunner {
   }
 
   /**
-   * Extract Trinity Protocol metrics from deliberation
-   */
-  private extractTrinityMetrics(
-    deliberation: {
-      timeMs: number
-      advocateRecommendation?: string
-      criticRecommendation?: string
-      arbiterDecision?: string
-      advocateConfidence?: number
-      criticConfidence?: number
-      deadlockDetected?: boolean
-    },
-    totalDurationMs: number
-  ): TrinityBenchmarkMetrics {
-    return {
-      deliberationTimeMs: deliberation.timeMs || totalDurationMs,
-      consensusReached: deliberation.arbiterDecision === "approve",
-      advocateRecommendation: deliberation.advocateRecommendation,
-      criticRecommendation: deliberation.criticRecommendation,
-      arbiterDecision: deliberation.arbiterDecision,
-      advocateConfidence: deliberation.advocateConfidence,
-      criticConfidence: deliberation.criticConfidence,
-      deadlockDetected: deliberation.deadlockDetected ?? false,
-    }
-  }
-
-  /**
    * Estimate token usage
    */
   private estimateTokens(input: string, output: string): number {
@@ -313,7 +256,8 @@ export class BenchmarkRunner {
   private aggregateResults(
     suite: BenchmarkSuite,
     results: BenchmarkRunResult[],
-    totalDurationMs: number
+    totalDurationMs: number,
+    agentName: string
   ): BenchmarkSuiteResult {
     const passed = results.filter(r => r.passed)
     const totalTokens = results.reduce((sum, r) => sum + r.tokensUsed, 0)
@@ -339,17 +283,6 @@ export class BenchmarkRunner {
       scoreByDifficulty[diff] = diffResults.reduce((sum, r) => sum + r.score, 0) / diffResults.length
     }
 
-    // Trinity overall metrics
-    const trinityResults = results.filter(r => r.trinityMetrics)
-    const trinityOverall = trinityResults.length > 0
-      ? {
-          avgDeliberationTimeMs: trinityResults.reduce((sum, r) => sum + (r.trinityMetrics?.deliberationTimeMs || 0), 0) / trinityResults.length,
-          consensusRate: trinityResults.filter(r => r.trinityMetrics?.consensusReached).length / trinityResults.length,
-          deadlockRate: trinityResults.filter(r => r.trinityMetrics?.deadlockDetected).length / trinityResults.length,
-          decisionDistribution: this.countDecisions(trinityResults),
-        }
-      : undefined
-
     return {
       suiteId: suite.id,
       suiteName: suite.name,
@@ -366,20 +299,8 @@ export class BenchmarkRunner {
       avgTokensPerCase: totalTokens / results.length,
       avgDurationMs: totalDurationMs / results.length,
       results,
-      trinityOverall,
+      agentName,
     }
-  }
-
-  /**
-   * Count decision distribution
-   */
-  private countDecisions(results: BenchmarkRunResult[]): Record<string, number> {
-    const counts: Record<string, number> = {}
-    for (const r of results) {
-      const decision = r.trinityMetrics?.arbiterDecision || "unknown"
-      counts[decision] = (counts[decision] || 0) + 1
-    }
-    return counts
   }
 
   /**
@@ -388,7 +309,8 @@ export class BenchmarkRunner {
   private async saveResults(result: BenchmarkSuiteResult): Promise<void> {
     try {
       await mkdir(this.config.outputDir, { recursive: true })
-      const filename = `${result.suiteId}-${result.timestamp}.json`
+      const agentSlug = (result.agentName || "unknown").toLowerCase().replace(/\s+/g, "-")
+      const filename = `${result.suiteId}-${agentSlug}-${result.timestamp}.json`
       const filepath = join(this.config.outputDir, filename)
       await writeFile(filepath, JSON.stringify(result, null, 2))
       console.log(`[Benchmark] Results saved to ${filepath}`)
@@ -403,6 +325,7 @@ export class BenchmarkRunner {
   private printSummary(result: BenchmarkSuiteResult): void {
     console.log("\n" + "=".repeat(60))
     console.log(`BENCHMARK RESULTS: ${result.suiteName}`)
+    console.log(`Agent: ${result.agentName || "Unknown"}`)
     console.log("=".repeat(60))
     console.log(`\nOverall Score: ${(result.overallScore * 100).toFixed(1)}%`)
     console.log(`Pass Rate: ${result.passedCases}/${result.totalCases} (${((result.passedCases / result.totalCases) * 100).toFixed(1)}%)`)
@@ -419,13 +342,6 @@ export class BenchmarkRunner {
       console.log(`  ${diff}: ${(score * 100).toFixed(1)}%`)
     }
 
-    if (result.trinityOverall) {
-      console.log("\nTrinity Protocol Metrics:")
-      console.log(`  Consensus Rate: ${(result.trinityOverall.consensusRate * 100).toFixed(1)}%`)
-      console.log(`  Deadlock Rate: ${(result.trinityOverall.deadlockRate * 100).toFixed(1)}%`)
-      console.log(`  Avg Deliberation Time: ${result.trinityOverall.avgDeliberationTimeMs.toFixed(0)}ms`)
-    }
-
     console.log("\n" + "=".repeat(60))
   }
 
@@ -433,18 +349,7 @@ export class BenchmarkRunner {
    * Cleanup
    */
   cleanup(): void {
-    if (this.magi) {
-      this.magi.cleanup()
-      this.magi = null
-    }
-  }
-
-  /**
-   * Check if MAGI is available
-   */
-  static async isMAGIAvailable(): Promise<boolean> {
-    const integration = await loadMagiIntegration()
-    return integration?.isAvailable() ?? false
+    this.agent = null
   }
 }
 
@@ -453,11 +358,12 @@ export class BenchmarkRunner {
  */
 export async function runBenchmark(
   suite: BenchmarkSuite,
+  agent: Agent,
   config?: Partial<BenchmarkConfig>
 ): Promise<BenchmarkSuiteResult> {
   const runner = new BenchmarkRunner(config)
   try {
-    return await runner.runSuite(suite)
+    return await runner.runSuite(suite, agent)
   } finally {
     runner.cleanup()
   }

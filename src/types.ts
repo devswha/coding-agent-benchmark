@@ -1,17 +1,9 @@
 /**
- * MAGI Benchmark System - Type Definitions
- * Standalone benchmark types - no MAGI core dependencies
+ * Coding Agent Benchmark System - Type Definitions
+ *
+ * Generic benchmark types for evaluating any AI coding agent.
+ * Supports Claude Code, Cursor, Aider, OpenHands, Cline, etc.
  */
-
-/**
- * Problem category (mirrors MAGI core for compatibility)
- */
-export type ProblemCategory =
-  | "file_operation"
-  | "code_execution"
-  | "architecture"
-  | "security"
-  | "query"
 
 /**
  * Benchmark test case definition
@@ -47,9 +39,10 @@ export type BenchmarkCategory =
   | "code_explanation"     // Explain code
   | "refactoring"          // Refactor code
   | "test_generation"      // Generate tests
-  | "trinity_decision"     // Trinity Protocol decision quality
   | "task_completion"      // Multi-step task completion
   | "security"             // Security-related tasks
+  | "debugging"            // Debug and fix issues
+  | "documentation"        // Generate documentation
 
 export interface ValidationResult {
   passed: boolean
@@ -80,24 +73,11 @@ export interface BenchmarkRunResult {
   validationDetails?: string
   errors?: string[]
 
-  // Trinity metrics (if applicable)
-  trinityMetrics?: TrinityBenchmarkMetrics
-}
+  // Files modified (if tracked)
+  filesModified?: string[]
 
-/**
- * Trinity Protocol specific metrics
- */
-export interface TrinityBenchmarkMetrics {
-  deliberationTimeMs: number
-  consensusReached: boolean
-  advocateRecommendation?: string
-  criticRecommendation?: string
-  arbiterDecision?: string
-
-  // Quality indicators
-  advocateConfidence?: number
-  criticConfidence?: number
-  deadlockDetected: boolean
+  // Agent-specific metadata
+  metadata?: Record<string, unknown>
 }
 
 /**
@@ -108,6 +88,9 @@ export interface BenchmarkSuiteResult {
   suiteName: string
   timestamp: number
   durationMs: number
+
+  // Agent info
+  agentName?: string
 
   // Summary
   totalCases: number
@@ -127,22 +110,12 @@ export interface BenchmarkSuiteResult {
 
   // Individual results
   results: BenchmarkRunResult[]
-
-  // Trinity specific (if applicable)
-  trinityOverall?: TrinityOverallMetrics
 }
 
 export interface CategoryScore {
   score: number
   passed: number
   total: number
-}
-
-export interface TrinityOverallMetrics {
-  avgDeliberationTimeMs: number
-  consensusRate: number
-  deadlockRate: number
-  decisionDistribution: Record<string, number>
 }
 
 /**
@@ -182,12 +155,9 @@ export interface BenchmarkConfig {
   outputDir: string
   saveResults: boolean
 
-  // Model config
-  modelOverride?: string
-
-  // Trinity config
-  enableTrinity: boolean
-  forceTrinityReview: boolean
+  // Legacy (kept for backwards compatibility, ignored)
+  enableTrinity?: boolean
+  forceTrinityReview?: boolean
 }
 
 /**
@@ -217,6 +187,9 @@ export interface LeaderboardEntry {
   timestamp: number
   suiteId: string
 
+  // Agent info
+  agentName: string
+
   // Scores
   overallScore: number
   passRate: number
@@ -224,10 +197,6 @@ export interface LeaderboardEntry {
   // Performance
   avgDurationMs: number
   totalTokens: number
-
-  // Config
-  modelUsed: string
-  trinityEnabled: boolean
 
   // Metadata
   commitHash?: string
