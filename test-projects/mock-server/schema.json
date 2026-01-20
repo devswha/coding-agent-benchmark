@@ -1,0 +1,6 @@
+{
+  "resources": {
+    "users": { "fields": ["id", "name", "email"] },
+    "posts": { "fields": ["id", "title", "body", "userId"] }
+  }
+}

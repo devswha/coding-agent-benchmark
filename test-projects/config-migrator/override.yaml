@@ -1,0 +1,6 @@
+database:
+  port: 5433
+  password: secret
+app:
+  version: 1.1.0
+  debug: true

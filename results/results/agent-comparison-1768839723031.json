@@ -1,0 +1,424 @@
+{
+  "suiteId": "agent-comparison",
+  "suiteName": "Agent Comparison Benchmark",
+  "timestamp": 1768839723031,
+  "durationMs": 267597,
+  "totalCases": 20,
+  "passedCases": 7,
+  "failedCases": 13,
+  "skippedCases": 0,
+  "overallScore": 0.3883333333333333,
+  "scoreByCategory": {
+    "task_completion": {
+      "score": 0.30729166666666663,
+      "passed": 4,
+      "total": 16
+    },
+    "code_explanation": {
+      "score": 1,
+      "passed": 1,
+      "total": 1
+    },
+    "bug_fixing": {
+      "score": 0.5,
+      "passed": 1,
+      "total": 2
+    },
+    "refactoring": {
+      "score": 0.85,
+      "passed": 1,
+      "total": 1
+    }
+  },
+  "scoreByDifficulty": {
+    "easy": 0.5833333333333333,
+    "medium": 0.4277777777777778,
+    "hard": 0.16666666666666666
+  },
+  "totalTokensUsed": 7864,
+  "avgTokensPerCase": 393.2,
+  "avgDurationMs": 13379.85,
+  "results": [
+    {
+      "caseId": "ac-simple-001",
+      "caseName": "Single File Read",
+      "category": "task_completion",
+      "difficulty": "easy",
+      "passed": false,
+      "score": 0.25,
+      "durationMs": 2,
+      "tokensUsed": 125,
+      "output": "## MAGI Deliberation Complete\n\n### Melchior (Arbiter) - FINAL DECISION: DEFER\n**Reasoning:** Trinity Protocol incomplete. Dangerous operation requires full review. Please configure all orchestrators.\n\n**Key Points:**\n- Mode: No Advocate, No Critic\n- Recommendation: Configure full Trinity for dangerous operations\n\n",
+      "errors": [
+        "Failed check: Mentions project name",
+        "Failed check: Mentions version",
+        "Failed check: Lists dependencies"
+      ],
+      "trinityMetrics": {
+        "deliberationTimeMs": 2,
+        "consensusReached": false,
+        "arbiterDecision": "defer",
+        "deadlockDetected": false
+      }
+    },
+    {
+      "caseId": "ac-simple-002",
+      "caseName": "Code Search",
+      "category": "task_completion",
+      "difficulty": "easy",
+      "passed": false,
+      "score": 0.6666666666666666,
+      "durationMs": 8292,
+      "tokensUsed": 74,
+      "output": "- `validateConfig` — `/Users/devswha/MAGI/src/core/config.ts`\n- `validateAgentConfig` — `/Users/devswha/MAGI/oh-my-claude-sisyphus/src/agents/utils.ts`",
+      "errors": [
+        "Failed check: Shows function names"
+      ]
+    },
+    {
+      "caseId": "ac-simple-003",
+      "caseName": "Status Check",
+      "category": "task_completion",
+      "difficulty": "easy",
+      "passed": false,
+      "score": 0,
+      "durationMs": 1,
+      "tokensUsed": 118,
+      "output": "## MAGI Deliberation Complete\n\n### Melchior (Arbiter) - FINAL DECISION: DEFER\n**Reasoning:** Trinity Protocol incomplete. Dangerous operation requires full review. Please configure all orchestrators.\n\n**Key Points:**\n- Mode: No Advocate, No Critic\n- Recommendation: Configure full Trinity for dangerous operations\n\n",
+      "errors": [
+        "Failed check: Shows branch name",
+        "Failed check: Counts files",
+        "Failed check: Mentions staged status"
+      ],
+      "trinityMetrics": {
+        "deliberationTimeMs": 1,
+        "consensusReached": false,
+        "arbiterDecision": "defer",
+        "deadlockDetected": false
+      }
+    },
+    {
+      "caseId": "ac-simple-004",
+      "caseName": "Simple Explanation",
+      "category": "code_explanation",
+      "difficulty": "easy",
+      "passed": true,
+      "score": 1,
+      "durationMs": 2772,
+      "tokensUsed": 241,
+      "output": "This `debounce` function takes another function `fn` and a `delay`, and returns a new function that postpones calling `fn` until there haven’t been any new calls for `delay` milliseconds. Every time you call the returned function, it clears the previous timer and starts a new one, so only the *last* call in a rapid burst actually runs.\n\nThe TypeScript generics (`T`, `Parameters<T>`) make sure the returned function accepts the exact same argument types as `fn`, while `timeoutId` stores the pending timer so it can be cancelled and rescheduled."
+    },
+    {
+      "caseId": "ac-simple-005",
+      "caseName": "Quick Fix",
+      "category": "bug_fixing",
+      "difficulty": "easy",
+      "passed": true,
+      "score": 1,
+      "durationMs": 1164,
+      "tokensUsed": 58,
+      "output": "```typescriptfunction greet(name: string) {\n return `Hello, ${name}!`\n}\n```"
+    },
+    {
+      "caseId": "ac-multi-001",
+      "caseName": "Implement Feature with Tests",
+      "category": "task_completion",
+      "difficulty": "medium",
+      "passed": false,
+      "score": 0,
+      "durationMs": 1,
+      "tokensUsed": 158,
+      "output": "## MAGI Deliberation Complete\n\n### Melchior (Arbiter) - FINAL DECISION: DEFER\n**Reasoning:** Trinity Protocol incomplete. Dangerous operation requires full review. Please configure all orchestrators.\n\n**Key Points:**\n- Mode: No Advocate, No Critic\n- Recommendation: Configure full Trinity for dangerous operations\n\n",
+      "errors": [
+        "Missing required pattern: function\\s+clamp|const\\s+clamp",
+        "Missing required pattern: min.*max|max.*min",
+        "Missing required pattern: test|describe|it\\(",
+        "Missing required pattern: Math\\.(min|max)|<|>"
+      ],
+      "trinityMetrics": {
+        "deliberationTimeMs": 1,
+        "consensusReached": false,
+        "arbiterDecision": "defer",
+        "deadlockDetected": false
+      }
+    },
+    {
+      "caseId": "ac-multi-002",
+      "caseName": "Refactor Across Files",
+      "category": "refactoring",
+      "difficulty": "medium",
+      "passed": true,
+      "score": 0.85,
+      "durationMs": 22537,
+      "tokensUsed": 434,
+      "output": "## MAGI Deliberation Complete\n\n### Melchior (Arbiter) - FINAL DECISION: APPROVE\n**Reasoning:** Trinity Protocol incomplete but operation is low-risk. Proceeding with caution.\n\n**Key Points:**\n- Mode: No Advocate, No Critic\n- Single orchestrator mode active\n\n\n\n---\n\n## Executing Approved Action\n\nI can’t actually see any “tool results” in this chat—only your messages—so I don’t know which3 files contain that repeated timestamped `console.log` pattern, what their current message formats are, or where a shared utility should live in your repo.\n\nIf you paste the three file paths (or the relevant snippets around each occurrence), I’ll:\n- propose a `logger.ts` that supports `info | warn | error`,\n- keep backwards compatibility by exposing a default `log(message)` that prints exactly `[\\${timestamp}] \\${message}`,\n- and show you the updated call sites.\n\nAssuming the existing output format must stay identical, the `logger.ts` would look roughly like:\n\n- `log(message: string)` → uses `console.log` with `[\\${iso}] \\${message}` (backwards compatible)\n- `info(message: string)` → same as `log`\n- `warn(message: string)` → uses `console.warn` but keeps the same timestamp prefix- `error(message: string)` → uses `console.error` but keeps the same timestamp prefixSend the3 locations and I’ll return the exact `logger.ts` + the3 refactors.",
+      "errors": [
+        "Missing required pattern: export"
+      ],
+      "trinityMetrics": {
+        "deliberationTimeMs": 22537,
+        "consensusReached": true,
+        "arbiterDecision": "approve",
+        "deadlockDetected": false
+      }
+    },
+    {
+      "caseId": "ac-multi-003",
+      "caseName": "Debug Complex Issue",
+      "category": "bug_fixing",
+      "difficulty": "hard",
+      "passed": false,
+      "score": 0,
+      "durationMs": 1,
+      "tokensUsed": 190,
+      "output": "## MAGI Deliberation Complete\n\n### Melchior (Arbiter) - FINAL DECISION: DEFER\n**Reasoning:** Trinity Protocol incomplete. Dangerous operation requires full review. Please configure all orchestrators.\n\n**Key Points:**\n- Mode: No Advocate, No Critic\n- Recommendation: Configure full Trinity for dangerous operations\n\n",
+      "errors": [
+        "Missing required pattern: null|undefined|optional",
+        "Missing required pattern: error.*handling|try.*catch",
+        "Missing required pattern: async|await|promise"
+      ],
+      "trinityMetrics": {
+        "deliberationTimeMs": 1,
+        "consensusReached": false,
+        "arbiterDecision": "defer",
+        "deadlockDetected": false
+      }
+    },
+    {
+      "caseId": "ac-multi-004",
+      "caseName": "Add and Document API Endpoint",
+      "category": "task_completion",
+      "difficulty": "medium",
+      "passed": true,
+      "score": 1,
+      "durationMs": 22353,
+      "tokensUsed": 382,
+      "output": "I can’t see any “tool results above” in this chat—only your instruction that they were received—so I don’t yet have the concrete evidence needed to implement or show the handler/OpenAPI code confidently (repo framework, router location, validation library, existing OpenAPI format, and test setup).\n\nTo proceed without calling more tools, paste the key outputs/snippets from the tool results you ran, specifically:\n- The file paths where routes are registered (e.g., `app.ts`, `router.ts`, `routes/users.ts`)\n- How validation is done today (e.g., Zod/Joi/class-validator) + an example- Where the OpenAPI/Swagger spec lives (e.g., `openapi.yaml`, `swagger.ts`) + a sample path entry- The test framework and an example endpoint test (Jest/Supertest/Vitest, etc.)\n- Any existing “user preferences” storage/service layer (or `User` model) and how “user not found” is representedOnce you paste those, I’ll return:\n- The **endpoint handler code** for `POST /api/users/:userId/preferences` (with validation + error cases),\n- The **OpenAPI spec** entry (request body schema + responses),\n- And the **test** covering: success, invalid input (400), user not found (404)."
+    },
+    {
+      "caseId": "ac-multi-005",
+      "caseName": "Migration Script",
+      "category": "task_completion",
+      "difficulty": "medium",
+      "passed": true,
+      "score": 1,
+      "durationMs": 16438,
+      "tokensUsed": 1022,
+      "output": "### Balthasar (Advocate)\n- Adds a clear, queryable source of truth for verification state (`email_verified`) and an audit point (`verified_at`), enabling features like “show only verified users” and compliance reporting.\n- Default `false` is safe: existing users won’t be treated as verified accidentally.\n- Indexing `email_verified` helps performance for common filters (`WHERE email_verified = true`), especially if the table grows.\n\n### Caspar (Critic)\n- SQL safety checks depend on the database engine; syntax differs across Postgres/MySQL/SQLite. If we guess wrong, the migration may fail or give a false sense of safety.\n- Index on a low-cardinality boolean may not help (and can hurt write performance) unless queries frequently filter by it and select a small subset (e.g., only verified users).\n- “Safety checks” like “table exists” are tricky to do purely declaratively; you often need conditional blocks (e.g., `DO $$ ... $$` in Postgres), which are not portable.\n\n### Melchior (Arbiter) — Decision: **MODIFY**\nProceed by providing **PostgreSQL** migrations (the most common for such requirements) with robust safety checks via `DO $$ ... $$` blocks. If you’re on MySQL/SQLite, say so and I’ll adapt.\n\nBelow are **SQL-only** `up` and `down` migrations for **PostgreSQL**.\n\n---\n\n## Up Migration (PostgreSQL)\n\n```sql-- UP: add email_verified, verified_at, and index (with safety checks)\n\nDO $$\nBEGIN -- Safety check: table exists IF NOT EXISTS (\n SELECT1 FROM information_schema.tables WHERE table_schema = 'public'\n AND table_name = 'users'\n ) THEN RAISE EXCEPTION 'Table public.users does not exist';\n END IF;\n\n -- Add column email_verified if missing IF NOT EXISTS (\n SELECT1 FROM information_schema.columns WHERE table_schema = 'public'\n AND table_name = 'users'\n AND column_name = 'email_verified'\n ) THEN ALTER TABLE public.users ADD COLUMN email_verified boolean NOT NULL DEFAULT false;\n END IF;\n\n -- Add column verified_at if missing IF NOT EXISTS (\n SELECT1 FROM information_schema.columns WHERE table_schema = 'public'\n AND table_name = 'users'\n AND column_name = 'verified_at'\n ) THEN ALTER TABLE public.users ADD COLUMN verified_at timestamptz NULL;\n END IF;\n\n -- Create index on email_verified if missing IF NOT EXISTS (\n SELECT1 FROM pg_indexes WHERE schemaname = 'public'\n AND tablename = 'users'\n AND indexname = 'users_email_verified_idx'\n ) THEN CREATE INDEX users_email_verified_idx ON public.users (email_verified);\n END IF;\nEND$$;\n```\n\n---\n\n## Down Migration (PostgreSQL)\n\n```sql-- DOWN: drop index and columns (with safety checks)\n\nDO $$\nBEGIN -- If the table doesn't exist, treat rollback as a no-op (safer in down migrations)\n IF NOT EXISTS (\n SELECT1 FROM information_schema.tables WHERE table_schema = 'public'\n AND table_name = 'users'\n ) THEN RETURN;\n END IF;\n\n -- Drop index if it exists IF EXISTS (\n SELECT1 FROM pg_indexes WHERE schemaname = 'public'\n AND tablename = 'users'\n AND indexname = 'users_email_verified_idx'\n ) THEN DROP INDEX public.users_email_verified_idx;\n END IF;\n\n -- Drop verified_at if it exists IF EXISTS (\n SELECT1 FROM information_schema.columns WHERE table_schema = 'public'\n AND table_name = 'users'\n AND column_name = 'verified_at'\n ) THEN ALTER TABLE public.users DROP COLUMN verified_at;\n END IF;\n\n -- Drop email_verified if it exists IF EXISTS (\n SELECT1 FROM information_schema.columns WHERE table_schema = 'public'\n AND table_name = 'users'\n AND column_name = 'email_verified'\n ) THEN ALTER TABLE public.users DROP COLUMN email_verified;\n END IF;\nEND$$;\n```\n\n---\n\nIf your DB is **MySQL** or **SQLite**, tell me which one (and the migration tool if relevant), and I’ll rewrite these with the correct conditional/safety syntax for that engine."
+    },
+    {
+      "caseId": "ac-plan-001",
+      "caseName": "Design System Architecture",
+      "category": "task_completion",
+      "difficulty": "hard",
+      "passed": true,
+      "score": 1,
+      "durationMs": 41184,
+      "tokensUsed": 2054,
+      "output": "## MAGI Deliberation Complete\n\n### Melchior (Arbiter) - FINAL DECISION: APPROVE\n**Reasoning:** Trinity Protocol incomplete but operation is low-risk. Proceeding with caution.\n\n**Key Points:**\n- Mode: No Advocate, No Critic\n- Single orchestrator mode active\n\n\n\n---\n\n## Executing Approved Action\n\n###1) High-level architecture diagram (text)\n\n```\n +-------------------+\n | Web / Mobile |\n | (WS + REST/HTTP) |\n +---------+---------+\n |\n (TLS, Auth/JWT)\n |\n +---------v----------+\n | API Gateway / |\n | Load Balancer |\n +----+----------+----+\n | |\n HTTP/REST| |WebSocket (sticky or token-based resume)\n | |\n +-----------v--+ +--v-------------------+\n | REST API | | Realtime WS Cluster |\n | (Preferences, | | (Connection mgr, |\n | mark-read, | | fanout, acks) |\n | fetch history)| +--+------------------+\n +-------+-------+ |\n | | publish/subscribe | |\n +---------v---------+ +--v------------------+\n | Notification Svc | | Message Broker |\n | (create, route, | | (Redis/NATS/Kafka) |\n | persist) | +--+------------------+\n +---------+----------+ |\n | | events | |\n +-------v----------------v------+\n | Database (SQL) |\n | notifications, delivery, read |\n +------------------------------+\n |\n | (optional async)\n +--------v---------+\n | Worker(s) |\n | retries, digests |\n +------------------+\n```\n\n---\n\n###2) Key components and responsibilities- **Client (Web/Mobile)**\n - Opens WebSocket for real-time delivery.\n - Uses REST for pagination/history, marking as read, and initial sync.\n - Maintains last-received notification cursor for reconnect/resume.\n\n- **API Gateway / Load Balancer**\n - Terminates TLS, routes HTTP vs WS.\n - Scales horizontally; for WS, supports either sticky sessions or a shared session store (prefer shared session store + stateless nodes when possible).\n\n- **Realtime WebSocket Cluster**\n - Authenticates connection (JWT/cookie → userId).\n - Manages connections (user → socket(s)), heartbeats, reconnect logic.\n - Subscribes to notification events from broker and pushes to the right user sockets.\n - Sends delivery acknowledgements (optional) back to service/broker for observability and retries.\n\n- **REST API**\n - Endpoints:\n - `GET /notifications?cursor=...` (history)\n - `POST /notifications/:id/read` or `PATCH /notifications/read` (mark read)\n - `GET /notifications/unread-count`\n - Uses DB as source of truth; WS is delivery optimization.\n\n- **Notification Service (domain service)**\n - Accepts “notification intent” from other services (e.g., order shipped, security alert).\n - Validates type (info/warning/error), determines recipients, persists notifications.\n - Publishes “notification.created” events to broker after DB commit.\n\n- **Message Broker (Redis Pub/Sub or Streams, NATS, Kafka)**\n - Decouples producers from WS consumers.\n - Enables horizontal scaling of WS nodes.\n - Optional durability/replay depending on choice (Kafka/Streams > pub/sub).\n\n- **Database (SQL)**\n - Stores notifications, per-user state (read/unread), timestamps, type, payload.\n - Supports queries: unread counts, timeline pagination.\n\n- **Workers (optional but recommended)**\n - Retry failed deliveries (if you track delivery status).\n - Batch jobs (daily digests, cleanup/archival, push notifications fallback).\n\n---\n\n###3) Data models (example SQL-oriented)\n\n**users**\n- `id (PK)`\n- other user fields…\n\n**notifications** (the canonical record)\n- `id (UUID/ULID, PK)`\n- `user_id (FK users.id, indexed)`\n- `type (enum/text: info | warning | error, indexed)`\n- `title (text)`\n- `body (text)`\n- `payload (jsonb)` — flexible data for deep links, metadata- `created_at (timestamptz, indexed)`\n- `read_at (timestamptz, nullable, indexed)` — `NULL` => unread- `source (text)` — which subsystem emitted it (optional)\n- `dedupe_key (text, nullable, indexed unique per user)` — prevents spam duplicates (optional)\n\n**notification_delivery** (optional; only if you want delivery tracking)\n- `id (PK)`\n- `notification_id (FK, indexed)`\n- `socket_id / connection_id (text)`\n- `delivered_at (timestamptz, nullable)`\n- `ack_at (timestamptz, nullable)`\n- `status (text: pending|delivered|acked|failed)`\n- `attempt_count (int)`\n\n**Indexes to support performance**\n- `(user_id, created_at desc)` for timeline- `(user_id, read_at)` or partial index `WHERE read_at IS NULL` for unread counts (Postgres)\n- `(user_id, type, created_at desc)` if filtering by type is common---\n\n###4) Technology choices with rationale (one solid default stack)\n\n**WebSocket layer**\n- **Node.js (Fastify + ws) or NestJS + ws**, or **Go** (if you prefer lower memory per connection).\n- Rationale: Mature WS ecosystems; Node is productive, Go is efficient.10K concurrent is achievable with either if tuned.\n\n**Message broker**\n- For10K users and moderate throughput:\n - **Redis** (Pub/Sub or Streams) is simplest operationally.\n - If you need guaranteed delivery/replay at scale:\n - **Kafka** (strong durability, partitions, replay).\n - Middle ground:\n - **NATS** (low-latency pub/sub; JetStream adds persistence).\n- Rationale: Broker lets you scale WS nodes independently and broadcast to the right node.\n\n**Database**\n- **PostgreSQL**\n- Rationale: Great indexing, JSONB payload flexibility, partial indexes for unread, strong consistency.\n\n**Auth**\n- **JWT** (short-lived access token) + refresh, or signed cookies.\n- Rationale: Works for both REST and WS handshake; userId extraction is straightforward.\n\n**API docs**\n- **OpenAPI** for REST endpoints (WS documented separately with AsyncAPI optionally).\n- Rationale: Clear contract for mark-read/history endpoints.\n\n---\n\n###5) Scalability considerations (to reliably handle10K concurrent users)\n\n**WebSocket concurrency**\n- Horizontal scale WS servers behind a LB.\n- Avoid per-connection heavy memory usage:\n - Keep minimal session state in memory: `{userId, socketId, lastSeenCursor}`\n - Use efficient serialization (JSON is fine; consider msgpack only if necessary).\n- Heartbeats + timeouts to drop dead connections quickly.\n\n**Routing notifications to the right server**\n- Option A (simple): Any WS node subscribes to all events and filters by userId → can be wasteful at scale.\n- Option B (better): **Sharded channels**:\n - Publish to `notifications.user.<userId>` (too many channels) or - Publish to `notifications.shard.<hash(userId)%N>`; each node subscribes to one/more shards.\n- Option C (durable fanout): Use Kafka partitions by `userId` so order is preserved per user.\n\n**Database load**\n- Writes: insert notification row per recipient. If high fanout (one event to many users), consider:\n - A “template + recipient join” model (more complex) or - Async fanout worker to batch inserts.\n- Reads: paginate by `(user_id, created_at)` index; avoid offset pagination—use cursor-based.\n\n**Unread counts**\n- Use partial index or maintain a counter cache per user (with care for correctness).\n- If using counter cache, update in transaction when inserting/marking read.\n\n**Backpressure and retries**\n- If clients are slow/offline:\n - WS push is best-effort, DB is source of truth.\n - Client on reconnect calls REST to catch up from last cursor.\n- If you need guaranteed “seen” semantics, add ack + delivery table and retry worker.\n\n**Multi-device**\n- Map `userId -> multiple sockets` and deliver to all active devices.\n- Mark-read is per user (or per device if needed; default per user).\n\n**Observability**\n- Metrics: connected sockets, messages/sec, broker lag, DB write latency, mark-read latency.\n- Tracing: correlate notification creation → broker → WS deliver.\n\n---\n\nIf you share expected notification throughput (notifications/sec) and whether you need “guaranteed delivery” vs “best-effort + client catchup,” I can tighten the broker choice and the data model (e.g., whether to include `notification_delivery`).",
+      "trinityMetrics": {
+        "deliberationTimeMs": 41184,
+        "consensusReached": true,
+        "arbiterDecision": "approve",
+        "deadlockDetected": false
+      }
+    },
+    {
+      "caseId": "ac-plan-002",
+      "caseName": "Plan Feature Implementation",
+      "category": "task_completion",
+      "difficulty": "medium",
+      "passed": true,
+      "score": 1,
+      "durationMs": 32849,
+      "tokensUsed": 1759,
+      "output": "### Balthasar (Advocate)\n- Dark mode is a high-impact UX improvement with relatively bounded scope; users expect it and it improves accessibility (reduced glare) and perceived polish.\n- If designed around a single “theme source of truth” (HTML attribute/class + design tokens), it stays maintainable and avoids scattered conditional styling.\n- Persisting preference (localStorage + system preference fallback) makes behavior feel “smart” without backend complexity.\n\n### Caspar (Critic)\n- Risk of theme flicker (FOUC) on initial load if the theme is decided after React mounts.\n- Styling approach must match your current stack (CSS Modules, Tailwind, styled-components, MUI, etc.); forcing a new strategy can cause churn.\n- Testing can be flaky if it relies on `matchMedia` without proper mocks; SSR/Next.js adds complexity (hydration mismatch) if applicable.\n\n### Melchior (Arbiter) — Decision: **PROCEED with a practical, stack-agnostic plan**\nAssumption: standard React SPA (Vite/CRA) with a central `App` entry and either plain CSS/CSS Modules/Tailwind. I’ll propose a minimal approach that works across stacks: toggle a `data-theme` attribute on `<html>` and use CSS variables for tokens. (If you’re using MUI/styled-components, I can adapt.)\n\n---\n\n## Step-by-step implementation plan (specific + practical)\n\n### Step0 — Identify current styling & app entry points**Files to inspect/likely touch**\n- `src/main.tsx` or `src/index.tsx` (app bootstrap)\n- `src/App.tsx`\n- global stylesheet: `src/index.css` / `src/App.css` / `src/styles/globals.css`\n**Work**\n- Confirm whether you already use CSS variables, Tailwind, MUI ThemeProvider, etc.\n**Complexity:** S (15–30 min)\n\n---\n\n### Step1 — Define theme tokens (CSS variables)\n**Create/modify**\n- Modify: `src/styles/theme.css` (create if you don’t have one)\n- Modify: global stylesheet import location (e.g., `src/main.tsx` or `src/index.css`)\n**Work**\n- Define base tokens in `:root` (light) and override in `[data-theme=\"dark\"]`.\n- Keep tokens generic: background, text, border, elevated surfaces, primary.\n**Example structure**\n```css:root {\n --color-bg: #ffffff;\n --color-text: #111827;\n --color-surface: #f3f4f6;\n}\n\nhtml[data-theme=\"dark\"] {\n --color-bg: #0b1220;\n --color-text: #e5e7eb;\n --color-surface: #111827;\n}\n\nbody {\n background: var(--color-bg);\n color: var(--color-text);\n}\n```\n**Complexity:** M (30–90 min depending on how many colors/components)\n\n---\n\n### Step2 — Implement theme state management (single source of truth)\n**State management approach**\n- Use a small **ThemeProvider (React Context)** + a `useTheme()` hook.\n- Theme value type: `\"light\" | \"dark\" | \"system\"`.\n- “Effective theme” computed from system preference when set to `system`.\n\n**Create**\n- `src/theme/ThemeProvider.tsx`\n- `src/theme/useTheme.ts`\n- `src/theme/themeTypes.ts` (optional)\n**Modify**\n- Wrap app in provider in `src/main.tsx` or `src/index.tsx`\n**Complexity:** M (45–90 min)\n\nKey behaviors:\n- `setTheme(nextTheme)` updates:\n - persisted preference (localStorage)\n - DOM attribute: `document.documentElement.dataset.theme = effectiveTheme`\n- Listen for system theme changes when preference is `system`.\n\n---\n\n### Step3 — Prevent “flash of wrong theme” (initial bootstrapping)\n**Goal**\n- Apply correct theme **before** React paints.\n\n**Create/modify (choose one based on build tool)**\n- If Vite/CRA: modify `index.html` to include a tiny inline script in `<head>`:\n - read `localStorage.theme`\n - if absent, check `prefers-color-scheme: dark`\n - set `document.documentElement.dataset.theme = \"dark\"|\"light\"`\n\n**Files**\n- Modify: `index.html`\n**Complexity:** M (30–60 min)**Risk reduced:** eliminates intermittent flicker complaints---\n\n### Step4 — Add a theme toggle UI**Create**\n- `src/components/ThemeToggle.tsx`\n**Modify**\n- Place it in a top-level layout component (e.g., `App.tsx` header/navbar)\n**Behavior**\n- Simple toggle: light ↔ dark- Optional: a3-way select: system / light / dark**Complexity:** S–M (20–60 min)\n\n---\n\n### Step5 — Update existing styles/components to use tokens**CSS/styling strategy**\n- Preferred: convert hardcoded colors to CSS variables.\n- For component-level styling:\n - CSS Modules: `color: var(--color-text)`\n - Tailwind: map tokens via `theme.extend.colors` or use `bg-[var(--color-bg)]` style where appropriate.\n - MUI/styled-components: could instead drive ThemeProvider theme object; if that’s your stack, switch to that approach.\n\n**Files**\n- Modify: component styles that currently hardcode light colors.\n- Start with shared surfaces: page background, cards, header, inputs, modals.\n**Complexity:** L (2–8 hours depending on app size)\n\nPractical approach:\n- Do the “top20%” first: global background/text + main layout + most-used components.\n- Leave edge pages for later; they’ll still inherit base body colors.\n\n---\n\n### Step6 — Persistence strategy (user preference)\n**User preference persistence**\n- Client-only default: `localStorage` key, e.g., `themePreference = \"system\"|\"light\"|\"dark\"`.\n- If you have user accounts and want cross-device sync later:\n - add optional API: `PATCH /me/preferences { theme }`\n - still keep localStorage as immediate fallback.\n\n**Files**\n- In provider: `src/theme/ThemeProvider.tsx` reads/writes localStorage.\n- (Optional) `src/api/userPreferences.ts` if syncing to backend.\n**Complexity:** S (15–45 min) client-only; M–L if backend sync---\n\n### Step7 — Testing strategy**Unit tests (fast)**\n- Test `getEffectiveTheme(preference, systemPref)` pure logic.\n- Test that toggling updates `document.documentElement.dataset.theme`.\n- Mock `window.matchMedia`.\n\n**Integration/UI tests**\n- Render `ThemeProvider` + `ThemeToggle`, simulate click, assert DOM attribute and persisted value.\n\n**E2E (optional but best for confidence)**\n- Playwright/Cypress: ensure theme persists across reload and no flicker (hard to assert perfectly, but you can check that the attribute is set before first paint by inspecting page early hooks).\n\n**Files**\n- Create: `src/theme/__tests__/theme.test.ts`\n- Create: `src/components/__tests__/ThemeToggle.test.tsx`\n- Optional: `e2e/dark-mode.spec.ts`\n**Complexity:** M (1–3 hours)\n\n---\n\n## Summary of steps with complexity estimates1. Assess current styling + entry points — **S**\n2. Add CSS tokens + dark overrides — **M**\n3. ThemeProvider + hook (Context) — **M**\n4. Pre-hydration theme script (avoid flicker) — **M**\n5. Toggle UI — **S–M**\n6. Convert existing components to tokens — **L**\n7. Tests (unit + integration + optional e2e) — **M**\n\n---\n\nIf you tell me your styling stack (Tailwind vs CSS Modules vs MUI/styled-components) and whether you use SSR (Next.js), I’ll tailor the file list and the no-flicker strategy precisely (SSR changes Step3)."
+    },
+    {
+      "caseId": "ac-plan-003",
+      "caseName": "Review and Improve Design",
+      "category": "task_completion",
+      "difficulty": "hard",
+      "passed": false,
+      "score": 0,
+      "durationMs": 0,
+      "tokensUsed": 182,
+      "output": "## MAGI Deliberation Complete\n\n### Melchior (Arbiter) - FINAL DECISION: DEFER\n**Reasoning:** Trinity Protocol incomplete. Dangerous operation requires full review. Please configure all orchestrators.\n\n**Key Points:**\n- Mode: No Advocate, No Critic\n- Recommendation: Configure full Trinity for dangerous operations\n\n",
+      "errors": [
+        "Missing required pattern: security|vulnerability|exploit",
+        "Missing required pattern: MD5|hash|bcrypt|argon",
+        "Missing required pattern: refresh.*token|token.*refresh",
+        "Missing required pattern: localStorage|XSS|storage"
+      ],
+      "trinityMetrics": {
+        "deliberationTimeMs": 0,
+        "consensusReached": false,
+        "arbiterDecision": "defer",
+        "deadlockDetected": false
+      }
+    },
+    {
+      "caseId": "ac-plan-004",
+      "caseName": "Identify Tech Debt",
+      "category": "task_completion",
+      "difficulty": "medium",
+      "passed": false,
+      "score": 0,
+      "durationMs": 1,
+      "tokensUsed": 239,
+      "output": "## MAGI Deliberation Complete\n\n### Melchior (Arbiter) - FINAL DECISION: DEFER\n**Reasoning:** Trinity Protocol incomplete. Dangerous operation requires full review. Please configure all orchestrators.\n\n**Key Points:**\n- Mode: No Advocate, No Critic\n- Recommendation: Configure full Trinity for dangerous operations\n\n",
+      "errors": [
+        "Missing required pattern: SQL.*injection|injection",
+        "Missing required pattern: validation|sanitize|escape",
+        "Missing required pattern: typescript|type|any",
+        "Missing required pattern: transaction|cascade|consistency"
+      ],
+      "trinityMetrics": {
+        "deliberationTimeMs": 1,
+        "consensusReached": false,
+        "arbiterDecision": "defer",
+        "deadlockDetected": false
+      }
+    },
+    {
+      "caseId": "ac-plan-005",
+      "caseName": "Create Implementation Roadmap",
+      "category": "task_completion",
+      "difficulty": "hard",
+      "passed": false,
+      "score": 0,
+      "durationMs": 0,
+      "tokensUsed": 186,
+      "output": "## MAGI Deliberation Complete\n\n### Melchior (Arbiter) - FINAL DECISION: DEFER\n**Reasoning:** Trinity Protocol incomplete. Dangerous operation requires full review. Please configure all orchestrators.\n\n**Key Points:**\n- Mode: No Advocate, No Critic\n- Recommendation: Configure full Trinity for dangerous operations\n\n",
+      "errors": [
+        "Missing required pattern: phase|stage|milestone",
+        "Missing required pattern: migration|tenant|isolation",
+        "Missing required pattern: risk|dependency",
+        "Missing required pattern: timeline|estimate"
+      ],
+      "trinityMetrics": {
+        "deliberationTimeMs": 0,
+        "consensusReached": false,
+        "arbiterDecision": "defer",
+        "deadlockDetected": false
+      }
+    },
+    {
+      "caseId": "ac-collab-001",
+      "caseName": "Delegate to Specialist",
+      "category": "task_completion",
+      "difficulty": "medium",
+      "passed": false,
+      "score": 0,
+      "durationMs": 120000,
+      "tokensUsed": 0,
+      "output": "",
+      "errors": [
+        "Timeout after 120000ms"
+      ]
+    },
+    {
+      "caseId": "ac-collab-002",
+      "caseName": "Parallel Task Execution",
+      "category": "task_completion",
+      "difficulty": "medium",
+      "passed": false,
+      "score": 0,
+      "durationMs": 2,
+      "tokensUsed": 148,
+      "output": "## MAGI Deliberation Complete\n\n### Melchior (Arbiter) - FINAL DECISION: DEFER\n**Reasoning:** Trinity Protocol incomplete. Dangerous operation requires full review. Please configure all orchestrators.\n\n**Key Points:**\n- Mode: No Advocate, No Critic\n- Recommendation: Configure full Trinity for dangerous operations\n\n",
+      "errors": [
+        "Failed check: Recognizes independence",
+        "Failed check: Addresses types",
+        "Failed check: Addresses README",
+        "Failed check: Addresses tests",
+        "Failed check: Addresses dependencies"
+      ],
+      "trinityMetrics": {
+        "deliberationTimeMs": 2,
+        "consensusReached": false,
+        "arbiterDecision": "defer",
+        "deadlockDetected": false
+      }
+    },
+    {
+      "caseId": "ac-collab-003",
+      "caseName": "Research Then Implement",
+      "category": "task_completion",
+      "difficulty": "hard",
+      "passed": false,
+      "score": 0,
+      "durationMs": 0,
+      "tokensUsed": 159,
+      "output": "## MAGI Deliberation Complete\n\n### Melchior (Arbiter) - FINAL DECISION: DEFER\n**Reasoning:** Trinity Protocol incomplete. Dangerous operation requires full review. Please configure all orchestrators.\n\n**Key Points:**\n- Mode: No Advocate, No Critic\n- Recommendation: Configure full Trinity for dangerous operations\n\n",
+      "errors": [
+        "Missing required pattern: redis",
+        "Missing required pattern: rate.*limit|limit.*rate",
+        "Missing required pattern: algorithm|token.*bucket|sliding.*window",
+        "Missing required pattern: test"
+      ],
+      "trinityMetrics": {
+        "deliberationTimeMs": 0,
+        "consensusReached": false,
+        "arbiterDecision": "defer",
+        "deadlockDetected": false
+      }
+    },
+    {
+      "caseId": "ac-collab-004",
+      "caseName": "Code Review Workflow",
+      "category": "task_completion",
+      "difficulty": "medium",
+      "passed": false,
+      "score": 0,
+      "durationMs": 0,
+      "tokensUsed": 191,
+      "output": "## MAGI Deliberation Complete\n\n### Melchior (Arbiter) - FINAL DECISION: DEFER\n**Reasoning:** Trinity Protocol incomplete. Dangerous operation requires full review. Please configure all orchestrators.\n\n**Key Points:**\n- Mode: No Advocate, No Critic\n- Recommendation: Configure full Trinity for dangerous operations\n\n",
+      "errors": [
+        "Missing required pattern: security|pci|sensitive",
+        "Missing required pattern: log|console|sensitive.*data",
+        "Missing required pattern: error.*handling|try.*catch",
+        "Missing required pattern: validation|validate"
+      ],
+      "trinityMetrics": {
+        "deliberationTimeMs": 0,
+        "consensusReached": false,
+        "arbiterDecision": "defer",
+        "deadlockDetected": false
+      }
+    },
+    {
+      "caseId": "ac-collab-005",
+      "caseName": "Error Recovery Chain",
+      "category": "task_completion",
+      "difficulty": "hard",
+      "passed": false,
+      "score": 0,
+      "durationMs": 0,
+      "tokensUsed": 144,
+      "output": "## MAGI Deliberation Complete\n\n### Melchior (Arbiter) - FINAL DECISION: DEFER\n**Reasoning:** Trinity Protocol incomplete. Dangerous operation requires full review. Please configure all orchestrators.\n\n**Key Points:**\n- Mode: No Advocate, No Critic\n- Recommendation: Configure full Trinity for dangerous operations\n\n",
+      "errors": [
+        "Failed check: Mentions running tests",
+        "Failed check: Mentions analysis",
+        "Failed check: Mentions fixing",
+        "Failed check: Mentions verification",
+        "Failed check: Shows persistence"
+      ],
+      "trinityMetrics": {
+        "deliberationTimeMs": 0,
+        "consensusReached": false,
+        "arbiterDecision": "defer",
+        "deadlockDetected": false
+      }
+    }
+  ],
+  "trinityOverall": {
+    "avgDeliberationTimeMs": 4902.2307692307695,
+    "consensusRate": 0.15384615384615385,
+    "deadlockRate": 0,
+    "decisionDistribution": {
+      "defer": 11,
+      "approve": 2
+    }
+  }
+}

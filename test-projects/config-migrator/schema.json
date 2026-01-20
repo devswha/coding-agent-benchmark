@@ -1,0 +1,17 @@
+{
+  "properties": {
+    "database": {
+      "type": "object",
+      "required": true,
+      "properties": {
+        "host": { "type": "string", "required": true }
+      }
+    },
+    "app": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" }
+      }
+    }
+  }
+}

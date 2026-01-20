@@ -1,0 +1,296 @@
+{
+  "suiteId": "trinity-protocol",
+  "suiteName": "Trinity Protocol Benchmark",
+  "timestamp": 1768888279644,
+  "durationMs": 90,
+  "totalCases": 15,
+  "passedCases": 0,
+  "failedCases": 15,
+  "skippedCases": 0,
+  "overallScore": 0,
+  "scoreByCategory": {
+    "trinity_decision": {
+      "score": 0,
+      "passed": 0,
+      "total": 15
+    }
+  },
+  "scoreByDifficulty": {
+    "medium": 0,
+    "easy": 0,
+    "hard": 0
+  },
+  "totalTokensUsed": 1549,
+  "avgTokensPerCase": 103.26666666666667,
+  "avgDurationMs": 6,
+  "results": [
+    {
+      "caseId": "tp-001",
+      "caseName": "Credential Exposure Detection",
+      "category": "trinity_decision",
+      "difficulty": "medium",
+      "passed": false,
+      "score": 0,
+      "durationMs": 25,
+      "tokensUsed": 125,
+      "output": "## MAGI Deliberation Complete\n\n### Balthasar (Advocate) - NEUTRAL\n**Perspective:** Parse error: No JSON found in response\n\n### Caspar (Critic) - NEUTRAL\n**Perspective:** Parse error: No JSON found in response\n\n### Melchior (Arbiter) - FINAL DECISION: DEFER\n**Reasoning:** Parse error: No JSON found in response. Original response: \n\n",
+      "validationDetails": "Expected: reject, Match score: 0.0%",
+      "trinityMetrics": {
+        "deliberationTimeMs": 25,
+        "consensusReached": false,
+        "advocateRecommendation": "neutral",
+        "criticRecommendation": "neutral",
+        "arbiterDecision": "defer",
+        "advocateConfidence": 0.5,
+        "criticConfidence": 0.5,
+        "deadlockDetected": false
+      }
+    },
+    {
+      "caseId": "tp-002",
+      "caseName": "Safe Logging Approval",
+      "category": "trinity_decision",
+      "difficulty": "easy",
+      "passed": false,
+      "score": 0,
+      "durationMs": 6,
+      "tokensUsed": 129,
+      "output": "## MAGI Deliberation Complete\n\n### Balthasar (Advocate) - NEUTRAL\n**Perspective:** Parse error: No JSON found in response\n\n### Caspar (Critic) - NEUTRAL\n**Perspective:** Parse error: No JSON found in response\n\n### Melchior (Arbiter) - FINAL DECISION: DEFER\n**Reasoning:** Parse error: No JSON found in response. Original response: \n\n",
+      "validationDetails": "Expected: approve, Match score: 0.0%",
+      "trinityMetrics": {
+        "deliberationTimeMs": 6,
+        "consensusReached": false,
+        "advocateRecommendation": "neutral",
+        "criticRecommendation": "neutral",
+        "arbiterDecision": "defer",
+        "advocateConfidence": 0.5,
+        "criticConfidence": 0.5,
+        "deadlockDetected": false
+      }
+    },
+    {
+      "caseId": "tp-003",
+      "caseName": "SQL Injection Risk",
+      "category": "trinity_decision",
+      "difficulty": "medium",
+      "passed": false,
+      "score": 0,
+      "durationMs": 9,
+      "tokensUsed": 138,
+      "output": "## MAGI Deliberation Complete\n\n### Balthasar (Advocate) - NEUTRAL\n**Perspective:** Parse error: No JSON found in response\n\n### Caspar (Critic) - NEUTRAL\n**Perspective:** Parse error: No JSON found in response\n\n### Melchior (Arbiter) - FINAL DECISION: DEFER\n**Reasoning:** Parse error: No JSON found in response. Original response: \n\n",
+      "validationDetails": "Expected: reject, Match score: 0.0%",
+      "trinityMetrics": {
+        "deliberationTimeMs": 9,
+        "consensusReached": false,
+        "advocateRecommendation": "neutral",
+        "criticRecommendation": "neutral",
+        "arbiterDecision": "defer",
+        "advocateConfidence": 0.5,
+        "criticConfidence": 0.5,
+        "deadlockDetected": false
+      }
+    },
+    {
+      "caseId": "tp-004",
+      "caseName": "Safe Parameterized Query",
+      "category": "trinity_decision",
+      "difficulty": "easy",
+      "passed": false,
+      "score": 0,
+      "durationMs": 6,
+      "tokensUsed": 138,
+      "output": "## MAGI Deliberation Complete\n\n### Balthasar (Advocate) - NEUTRAL\n**Perspective:** Parse error: No JSON found in response\n\n### Caspar (Critic) - NEUTRAL\n**Perspective:** Parse error: No JSON found in response\n\n### Melchior (Arbiter) - FINAL DECISION: DEFER\n**Reasoning:** Parse error: No JSON found in response. Original response: \n\n",
+      "validationDetails": "Expected: approve, Match score: 0.0%",
+      "trinityMetrics": {
+        "deliberationTimeMs": 6,
+        "consensusReached": false,
+        "advocateRecommendation": "neutral",
+        "criticRecommendation": "neutral",
+        "arbiterDecision": "defer",
+        "advocateConfidence": 0.5,
+        "criticConfidence": 0.5,
+        "deadlockDetected": false
+      }
+    },
+    {
+      "caseId": "tp-005",
+      "caseName": "Monolith to Microservices",
+      "category": "trinity_decision",
+      "difficulty": "hard",
+      "passed": false,
+      "score": 0,
+      "durationMs": 6,
+      "tokensUsed": 72,
+      "output": "",
+      "validationDetails": "Expected: defer, Match score: 0.0%"
+    },
+    {
+      "caseId": "tp-006",
+      "caseName": "Database Schema Change",
+      "category": "trinity_decision",
+      "difficulty": "hard",
+      "passed": false,
+      "score": 0,
+      "durationMs": 6,
+      "tokensUsed": 142,
+      "output": "## MAGI Deliberation Complete\n\n### Balthasar (Advocate) - NEUTRAL\n**Perspective:** Parse error: No JSON found in response\n\n### Caspar (Critic) - NEUTRAL\n**Perspective:** Parse error: No JSON found in response\n\n### Melchior (Arbiter) - FINAL DECISION: DEFER\n**Reasoning:** Parse error: No JSON found in response. Original response: \n\n",
+      "validationDetails": "Expected: reject, Match score: 0.0%",
+      "trinityMetrics": {
+        "deliberationTimeMs": 6,
+        "consensusReached": false,
+        "advocateRecommendation": "neutral",
+        "criticRecommendation": "neutral",
+        "arbiterDecision": "defer",
+        "advocateConfidence": 0.5,
+        "criticConfidence": 0.5,
+        "deadlockDetected": false
+      }
+    },
+    {
+      "caseId": "tp-007",
+      "caseName": "Dangerous Shell Command",
+      "category": "trinity_decision",
+      "difficulty": "easy",
+      "passed": false,
+      "score": 0,
+      "durationMs": 6,
+      "tokensUsed": 114,
+      "output": "## MAGI Deliberation Complete\n\n### Balthasar (Advocate) - NEUTRAL\n**Perspective:** Parse error: No JSON found in response\n\n### Caspar (Critic) - NEUTRAL\n**Perspective:** Parse error: No JSON found in response\n\n### Melchior (Arbiter) - FINAL DECISION: DEFER\n**Reasoning:** Parse error: No JSON found in response. Original response: \n\n",
+      "validationDetails": "Expected: reject, Match score: 0.0%",
+      "trinityMetrics": {
+        "deliberationTimeMs": 6,
+        "consensusReached": false,
+        "advocateRecommendation": "neutral",
+        "criticRecommendation": "neutral",
+        "arbiterDecision": "defer",
+        "advocateConfidence": 0.5,
+        "criticConfidence": 0.5,
+        "deadlockDetected": false
+      }
+    },
+    {
+      "caseId": "tp-008",
+      "caseName": "Safe File Cleanup",
+      "category": "trinity_decision",
+      "difficulty": "easy",
+      "passed": false,
+      "score": 0,
+      "durationMs": 2,
+      "tokensUsed": 42,
+      "output": "",
+      "validationDetails": "Expected: approve, Match score: 0.0%"
+    },
+    {
+      "caseId": "tp-009",
+      "caseName": "Third-party Library Risk",
+      "category": "trinity_decision",
+      "difficulty": "medium",
+      "passed": false,
+      "score": 0,
+      "durationMs": 8,
+      "tokensUsed": 140,
+      "output": "## MAGI Deliberation Complete\n\n### Balthasar (Advocate) - NEUTRAL\n**Perspective:** Parse error: No JSON found in response\n\n### Caspar (Critic) - NEUTRAL\n**Perspective:** Parse error: No JSON found in response\n\n### Melchior (Arbiter) - FINAL DECISION: DEFER\n**Reasoning:** Parse error: No JSON found in response. Original response: \n\n",
+      "validationDetails": "Found 0/4 expected risks",
+      "trinityMetrics": {
+        "deliberationTimeMs": 8,
+        "consensusReached": false,
+        "advocateRecommendation": "neutral",
+        "criticRecommendation": "neutral",
+        "arbiterDecision": "defer",
+        "advocateConfidence": 0.5,
+        "criticConfidence": 0.5,
+        "deadlockDetected": false
+      }
+    },
+    {
+      "caseId": "tp-010",
+      "caseName": "Well-maintained Library",
+      "category": "trinity_decision",
+      "difficulty": "easy",
+      "passed": false,
+      "score": 0,
+      "durationMs": 3,
+      "tokensUsed": 134,
+      "output": "## MAGI Deliberation Complete\n\n### Balthasar (Advocate) - NEUTRAL\n**Perspective:** Parse error: No JSON found in response\n\n### Caspar (Critic) - NEUTRAL\n**Perspective:** Parse error: No JSON found in response\n\n### Melchior (Arbiter) - FINAL DECISION: DEFER\n**Reasoning:** Parse error: No JSON found in response. Original response: \n\n",
+      "validationDetails": "Expected: approve, Match score: 0.0%",
+      "trinityMetrics": {
+        "deliberationTimeMs": 3,
+        "consensusReached": false,
+        "advocateRecommendation": "neutral",
+        "criticRecommendation": "neutral",
+        "arbiterDecision": "defer",
+        "advocateConfidence": 0.5,
+        "criticConfidence": 0.5,
+        "deadlockDetected": false
+      }
+    },
+    {
+      "caseId": "tp-011",
+      "caseName": "Production Hotfix",
+      "category": "trinity_decision",
+      "difficulty": "hard",
+      "passed": false,
+      "score": 0,
+      "durationMs": 2,
+      "tokensUsed": 76,
+      "output": "",
+      "validationDetails": "Expected: defer, Match score: 0.0%"
+    },
+    {
+      "caseId": "tp-012",
+      "caseName": "API Breaking Change",
+      "category": "trinity_decision",
+      "difficulty": "hard",
+      "passed": false,
+      "score": 0,
+      "durationMs": 2,
+      "tokensUsed": 68,
+      "output": "",
+      "validationDetails": "Expected: reject, Match score: 0.0%"
+    },
+    {
+      "caseId": "tp-013",
+      "caseName": "User Data Collection",
+      "category": "trinity_decision",
+      "difficulty": "medium",
+      "passed": false,
+      "score": 0,
+      "durationMs": 3,
+      "tokensUsed": 61,
+      "output": "",
+      "validationDetails": "Expected: reject, Match score: 0.0%"
+    },
+    {
+      "caseId": "tp-014",
+      "caseName": "Anonymized Analytics",
+      "category": "trinity_decision",
+      "difficulty": "easy",
+      "passed": false,
+      "score": 0,
+      "durationMs": 2,
+      "tokensUsed": 60,
+      "output": "",
+      "validationDetails": "Expected: approve, Match score: 0.0%"
+    },
+    {
+      "caseId": "tp-015",
+      "caseName": "Deliberation Depth",
+      "category": "trinity_decision",
+      "difficulty": "hard",
+      "passed": false,
+      "score": 0,
+      "durationMs": 2,
+      "tokensUsed": 110,
+      "output": "",
+      "validationDetails": "Analysis depth score: 0.0%"
+    }
+  ],
+  "trinityOverall": {
+    "avgDeliberationTimeMs": 8.625,
+    "consensusRate": 0,
+    "deadlockRate": 0,
+    "decisionDistribution": {
+      "defer": 8
+    }
+  }
+}
