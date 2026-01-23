@@ -17,6 +17,12 @@ A generic benchmark framework for evaluating AI coding agents.
 bun install
 ```
 
+### Prerequisites
+
+- Node.js 18+ or Bun
+- Git
+- (Optional) Google Cloud SDK - for Stitch MCP UI design integration
+
 ## Quick Start
 
 ```typescript
@@ -74,6 +80,16 @@ Tests ability to complete multi-step coding tasks.
 ```typescript
 import { taskCompletionSuite } from "coding-agent-benchmark"
 ```
+
+## MCP Integrations
+
+The benchmark system supports MCP (Model Context Protocol) servers for extended agent capabilities.
+
+| MCP Server | Package | Purpose | Setup |
+|------------|---------|---------|-------|
+| Stitch | `stitch-mcp` | Google Stitch UI design tools | [Setup Guide](./docs/stitch-mcp-setup.md) |
+
+See `.claude/mcp-servers.example.json` for configuration templates.
 
 ## Creating Custom Agents
 
