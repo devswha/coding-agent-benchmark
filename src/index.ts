@@ -35,15 +35,38 @@ export { BenchmarkRunner, runBenchmark } from "./runner"
 // Benchmark Suites
 export { codeGenerationSuite } from "./suites/code-generation"
 export { taskCompletionSuite } from "./suites/task-completion"
+export { securitySuite } from "./suites/security"
+export { sealQASuite, createSealQASuite } from "./suites/sealqa"
+
+// New modules
+export * from "./importers"
+export * from "./validators"
+export * from "./datasets"
+export * from "./execution"
+
+// Agent Implementations
+export {
+  BaseCLIAgent,
+  ClaudeCodeAgent,
+  ClaudeCodeSisyphusAgent,
+  OpenCodeAgent,
+  OpenCodeOhMyOpenCodeAgent,
+  agents,
+  type AgentKey,
+} from "./agents"
 
 // All suites combined
 import { codeGenerationSuite } from "./suites/code-generation"
 import { taskCompletionSuite } from "./suites/task-completion"
+import { securitySuite } from "./suites/security"
+import { sealQASuite } from "./suites/sealqa"
 import type { BenchmarkSuite } from "./types"
 
 export const ALL_SUITES: BenchmarkSuite[] = [
   codeGenerationSuite,
   taskCompletionSuite,
+  securitySuite,
+  sealQASuite,
 ]
 
 /**

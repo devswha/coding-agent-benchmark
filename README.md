@@ -1,17 +1,49 @@
 # Coding Agent Benchmark
 
-A generic benchmark framework for evaluating AI coding agents.
+A benchmark framework for evaluating AI coding agent **plugins and configurations** - not the underlying LLMs themselves.
 
-## Supported Agents
+## Purpose
 
-- Claude Code
-- Cursor
-- Aider
-- OpenHands
-- Cline
-- Any agent implementing the `Agent` interface
+This project benchmarks different plugin configurations on the same base CLI tools to measure how plugins improve agent performance. We compare:
+
+- Vanilla agents (no plugins) as baselines
+- Agents with enhancement plugins (oh-my-claudecode, oh-my-ssalsyphus, oh-my-opencode)
+
+## Supported Agent Configurations
+
+| Agent Key | Base CLI | Plugin | Repository |
+|-----------|----------|--------|------------|
+| `claude-naive` | claude | (none) | N/A |
+| `claude-omc` | claude | oh-my-claudecode | [Yeachan-Heo/oh-my-claudecode](https://github.com/Yeachan-Heo/oh-my-claudecode) |
+| `claude-sisyphus` | claude | oh-my-claude-sisyphus | [Yeachan-Heo/oh-my-claude-sisyphus](https://github.com/Yeachan-Heo/oh-my-claude-sisyphus) |
+| `opencode-naive` | opencode | (none) | N/A |
+| `opencode-sisyphus` | opencode | oh-my-ssalsyphus | [devswha/oh-my-ssalsyphus](https://github.com/devswha/oh-my-ssalsyphus) |
+| `opencode-ohmyopencode` | opencode | oh-my-opencode | [code-yeongyu/oh-my-opencode](https://github.com/code-yeongyu/oh-my-opencode) |
 
 ## Installation
+
+### Prerequisites
+
+- [Bun](https://bun.sh) runtime
+- claude CLI (for claude-* agents)
+- opencode CLI (for opencode-* agents)
+
+### Plugin Setup
+
+For plugin-enhanced agents, install the respective plugins:
+
+```bash
+# For claude-omc
+# Follow instructions at https://github.com/Yeachan-Heo/oh-my-claudecode
+
+# For opencode-sisyphus
+# Follow instructions at https://github.com/devswha/oh-my-ssalsyphus
+
+# For opencode-ohmyopencode
+# Follow instructions at https://github.com/code-yeongyu/oh-my-opencode
+```
+
+### Project Setup
 
 ```bash
 bun install
@@ -23,62 +55,82 @@ bun install
 - Git
 - (Optional) Google Cloud SDK - for Stitch MCP UI design integration
 
-## Quick Start
+## Usage
 
-```typescript
-import { BenchmarkRunner, codeGenerationSuite, type Agent } from "coding-agent-benchmark"
-
-// Implement the Agent interface for your agent
-const myAgent: Agent = {
-  name: "My Agent",
-
-  async execute(prompt, config) {
-    // Your agent execution logic here
-    const result = await runMyAgent(prompt)
-    return {
-      content: result.output,
-      tokensUsed: result.tokens,
-      durationMs: result.duration,
-    }
-  },
-
-  async isAvailable() {
-    return true
-  }
-}
-
-// Run benchmarks
-const runner = new BenchmarkRunner({ verbose: true })
-const results = await runner.runSuite(codeGenerationSuite, myAgent)
-
-console.log(`Score: ${results.overallScore}`)
-console.log(`Pass Rate: ${results.passedCases}/${results.totalCases}`)
-```
-
-## CLI Usage
+### CLI Commands
 
 ```bash
-# List available suites
+# List available agents
+bun run dev agents
+
+# List available benchmark suites
 bun run list
+
+# Run benchmark with specific agent
+bun run dev run <suite-id> --agent <agent-key>
+
+# Examples:
+bun run dev run code-generation --agent claude-naive
+bun run dev run code-generation --agent claude-omc
+bun run dev run task-completion --agent opencode-sisyphus
 
 # View leaderboard
 bun run leaderboard
+
+# Launch dashboard
+bun run dashboard
+```
+
+### Running Comparisons
+
+Compare vanilla vs plugin-enhanced performance:
+
+```bash
+# Run same benchmark with different configurations
+bun run dev run code-generation --agent claude-naive
+bun run dev run code-generation --agent claude-omc
+
+# Compare results in dashboard
+bun run dashboard
 ```
 
 ## Benchmark Suites
 
-### Code Generation
-Tests ability to generate code from natural language descriptions.
+| Suite | Description |
+|-------|-------------|
+| `code-generation` | HumanEval-style programming problems |
+| `task-completion` | Multi-step coding tasks |
+| `security` | Security-related challenges |
+| `sealqa` | Question-answering benchmarks |
 
-```typescript
-import { codeGenerationSuite } from "coding-agent-benchmark"
+## Dashboard
+
+View and compare benchmark results visually:
+
+```bash
+# Start API server (required)
+bun run dashboard:server
+
+# Start dashboard UI (in another terminal)
+bun run dashboard
 ```
 
-### Task Completion
-Tests ability to complete multi-step coding tasks.
+## Adding Custom Agents
+
+Implement the `Agent` interface:
 
 ```typescript
-import { taskCompletionSuite } from "coding-agent-benchmark"
+import { BaseCLIAgent } from "coding-agent-benchmark/agents"
+
+export class MyPluginAgent extends BaseCLIAgent {
+  readonly name = "MyAgent + MyPlugin"
+  protected readonly command = "my-cli"
+
+  protected buildArgs(prompt: string): string[] {
+    const activatedPrompt = `activation-keyword: ${prompt}`
+    return ["--flag", activatedPrompt]
+  }
+}
 ```
 
 ## MCP Integrations
@@ -90,110 +142,6 @@ The benchmark system supports MCP (Model Context Protocol) servers for extended 
 | Stitch | `stitch-mcp` | Google Stitch UI design tools | [Setup Guide](./docs/stitch-mcp-setup.md) |
 
 See `.claude/mcp-servers.example.json` for configuration templates.
-
-## Creating Custom Agents
-
-```typescript
-import type { Agent, AgentResponse } from "coding-agent-benchmark"
-import { spawn } from "child_process"
-
-// Example: CLI-based agent wrapper
-export const claudeCodeAgent: Agent = {
-  name: "Claude Code",
-
-  async execute(prompt, config): Promise<AgentResponse> {
-    const startTime = Date.now()
-
-    // Execute claude CLI
-    const result = await new Promise<string>((resolve, reject) => {
-      const proc = spawn("claude", ["-p", prompt], {
-        cwd: config?.workingDir,
-        timeout: config?.timeoutMs,
-      })
-
-      let output = ""
-      proc.stdout.on("data", (data) => output += data)
-      proc.on("close", () => resolve(output))
-      proc.on("error", reject)
-    })
-
-    return {
-      content: result,
-      durationMs: Date.now() - startTime,
-    }
-  },
-
-  async isAvailable() {
-    // Check if claude CLI is installed
-    try {
-      const { execSync } = await import("child_process")
-      execSync("which claude")
-      return true
-    } catch {
-      return false
-    }
-  }
-}
-```
-
-## Test Projects
-
-The `test-projects/` directory contains fixtures for benchmarking:
-
-- **blog-generator** - Markdown to HTML blog generator
-- **config-migrator** - YAML configuration merger
-- **git-stats** - Git repository statistics
-- **mock-server** - JSON schema to mock API
-- **todo-cli** - Simple todo CLI application
-
-## Benchmark Categories
-
-| Category | Description |
-|----------|-------------|
-| `code_generation` | Generate code from description |
-| `code_completion` | Complete partial code |
-| `bug_fixing` | Fix bugs in code |
-| `refactoring` | Refactor code |
-| `test_generation` | Generate tests |
-| `task_completion` | Multi-step tasks |
-| `debugging` | Debug issues |
-| `documentation` | Generate docs |
-
-## API Reference
-
-### BenchmarkRunner
-
-```typescript
-const runner = new BenchmarkRunner({
-  verbose: true,           // Show progress
-  saveResults: true,       // Save to JSON
-  outputDir: "./results",  // Results directory
-  maxConcurrency: 3,       // Parallel execution
-  defaultTimeoutMs: 60000, // Default timeout
-})
-
-const results = await runner.runSuite(suite, agent)
-```
-
-### Agent Interface
-
-```typescript
-interface Agent {
-  name: string
-  initialize?(config?: AgentConfig): Promise<void>
-  execute(prompt: string, config?: AgentConfig): Promise<AgentResponse>
-  isAvailable(): Promise<boolean>
-  cleanup?(): Promise<void>
-}
-
-interface AgentResponse {
-  content: string
-  tokensUsed?: number
-  durationMs?: number
-  filesModified?: string[]
-  metadata?: Record<string, unknown>
-}
-```
 
 ## License
 

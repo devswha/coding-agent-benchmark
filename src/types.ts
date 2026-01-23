@@ -5,6 +5,23 @@
  * Supports Claude Code, Cursor, Aider, OpenHands, Cline, etc.
  */
 
+// Re-export shared types
+import type {
+  BenchmarkCategory as BenchmarkCategoryType,
+  ToolCall,
+  SubAgentCall,
+  ExecutionTrace,
+  ExecutionStats,
+  CategoryScore,
+  BenchmarkRunResult,
+  BenchmarkSuiteResult,
+  BenchmarkFile,
+} from '../shared/types'
+
+// Re-export as both type and value (for compatibility)
+export type BenchmarkCategory = BenchmarkCategoryType
+export type { ToolCall, SubAgentCall, ExecutionTrace, ExecutionStats, CategoryScore, BenchmarkRunResult, BenchmarkSuiteResult, BenchmarkFile }
+
 /**
  * Benchmark test case definition
  */
@@ -29,20 +46,14 @@ export interface BenchmarkCase {
 
   // Metadata
   tags?: string[]
-  source?: string
-}
+  source?: string | BenchmarkSource
 
-export type BenchmarkCategory =
-  | "code_generation"      // Generate code from description
-  | "code_completion"      // Complete partial code
-  | "bug_fixing"           // Fix bugs in code
-  | "code_explanation"     // Explain code
-  | "refactoring"          // Refactor code
-  | "test_generation"      // Generate tests
-  | "task_completion"      // Multi-step task completion
-  | "security"             // Security-related tasks
-  | "debugging"            // Debug and fix issues
-  | "documentation"        // Generate documentation
+  // Execution-based validation (new)
+  executionConfig?: ExecutionConfig
+  testHarness?: TestHarness
+  fileContext?: FileContext
+  numSamples?: number  // For pass@k evaluation
+}
 
 export interface ValidationResult {
   passed: boolean
@@ -52,70 +63,52 @@ export interface ValidationResult {
 }
 
 /**
- * Single benchmark run result
+ * Execution configuration for code that needs to be run
  */
-export interface BenchmarkRunResult {
-  caseId: string
-  caseName: string
-  category: BenchmarkCategory
-  difficulty: string
-
-  // Outcome
-  passed: boolean
-  score: number
-
-  // Performance
-  durationMs: number
-  tokensUsed: number
-
-  // Output
-  output: string
-  validationDetails?: string
-  errors?: string[]
-
-  // Files modified (if tracked)
-  filesModified?: string[]
-
-  // Agent-specific metadata
-  metadata?: Record<string, unknown>
+export interface ExecutionConfig {
+  language: "python" | "typescript" | "javascript" | "go" | "rust"
+  runtimeVersion?: string
+  entryPoint: string
+  supportingFiles?: Record<string, string>
+  dependencies?: string[]
+  env?: Record<string, string>
+  timeoutMs?: number
+  memoryLimitMb?: number
+  allowNetwork?: boolean
 }
 
 /**
- * Complete benchmark suite result
+ * Test harness for validating code execution
  */
-export interface BenchmarkSuiteResult {
-  suiteId: string
-  suiteName: string
-  timestamp: number
-  durationMs: number
-
-  // Agent info
-  agentName?: string
-
-  // Summary
-  totalCases: number
-  passedCases: number
-  failedCases: number
-  skippedCases: number
-
-  // Scores
-  overallScore: number
-  scoreByCategory: Record<BenchmarkCategory, CategoryScore>
-  scoreByDifficulty: Record<string, number>
-
-  // Performance
-  totalTokensUsed: number
-  avgTokensPerCase: number
-  avgDurationMs: number
-
-  // Individual results
-  results: BenchmarkRunResult[]
+export interface TestHarness {
+  type: "unit_test" | "assertion" | "stdout_match" | "custom"
+  testCode: string
+  expectedStdout?: string
+  assertions?: TestAssertion[]
+  setupCode?: string
+  teardownCode?: string
+  framework?: string
 }
 
-export interface CategoryScore {
-  score: number
-  passed: number
-  total: number
+export interface TestAssertion {
+  input: unknown[]
+  expected: unknown
+  comparison: "equals" | "deep_equals" | "contains" | "matches_regex" | "throws"
+  tolerance?: number
+}
+
+export interface FileContext {
+  files: Record<string, string>
+  editableFiles: string[]
+  repoUrl?: string
+  repoRef?: string
+}
+
+export interface BenchmarkSource {
+  dataset: "custom" | "humaneval" | "humaneval_plus" | "mbpp" | "mbpp_plus" | "swe_bench" | "swe_bench_lite" | "sealqa"
+  originalId: string
+  datasetVersion: string
+  sourceUrl?: string
 }
 
 /**

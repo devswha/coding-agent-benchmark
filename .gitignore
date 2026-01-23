@@ -27,3 +27,21 @@ bun.lockb
 # Test artifacts
 coverage/
 .nyc_output/
+
+# Local state directories
+.omc/
+.playwright-mcp/
+.sisyphus/
+
+# Dashboard local state
+dashboard/.omc/
+dashboard/.sisyphus/
+dashboard/dist/
+
+# Utility scripts (local)
+get_api_key.py
+sanitize.py
+validate_email.py
+
+# Results (optional - uncomment to track)
+# results/

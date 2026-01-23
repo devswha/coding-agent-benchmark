@@ -15,8 +15,10 @@ import type {
   BenchmarkCategory,
 } from "./types"
 import type { Agent, AgentConfig, AgentResponse } from "./agent"
+import { executionValidator } from "./validators"
 import { writeFile, mkdir } from "fs/promises"
 import { join } from "path"
+import { parseExecutionTrace, computeExecutionStats } from "./parsers/execution-trace-parser"
 
 const DEFAULT_CONFIG: BenchmarkConfig = {
   maxConcurrency: 3,
@@ -105,17 +107,26 @@ export class BenchmarkRunner {
     const timeout = testCase.timeoutMs || suiteTimeout || this.config.defaultTimeoutMs
     const startTime = Date.now()
 
+    // Create timeout with cleanup capability (fixes #6)
+    const { promise: timeoutPromise, cleanup: cleanupTimeout } = this.createTimeoutPromise(timeout)
+
     try {
       // Execute through agent
       const response = await Promise.race([
         agent.execute(testCase.prompt, { timeoutMs: timeout }),
-        this.createTimeoutPromise(timeout),
+        timeoutPromise,
       ])
+
+      // Clear timeout on success to prevent memory leak
+      cleanupTimeout()
 
       const durationMs = response.durationMs || (Date.now() - startTime)
 
       // Validate output
-      const validation = this.validateOutput(testCase, response.content)
+      const validation = await this.validateOutput(testCase, response.content)
+
+      // Parse execution trace from output
+      const executionTrace = parseExecutionTrace(response.content)
 
       return {
         caseId: testCase.id,
@@ -129,8 +140,14 @@ export class BenchmarkRunner {
         output: response.content,
         validationDetails: validation.details,
         errors: validation.errors,
+        metadata: {
+          ...response.metadata,
+          executionTrace,
+          inputPrompt: testCase.prompt,
+        },
       }
     } catch (error) {
+      cleanupTimeout() // Also cleanup on error
       return this.createErrorResult(testCase, error, Date.now() - startTime)
     }
   }
@@ -161,10 +178,25 @@ export class BenchmarkRunner {
   /**
    * Validate benchmark output
    */
-  private validateOutput(
+  private async validateOutput(
     testCase: BenchmarkCase,
     output: string
-  ): { passed: boolean; score: number; details?: string; errors?: string[] } {
+  ): Promise<{ passed: boolean; score: number; details?: string; errors?: string[] }> {
+    // Check for execution-based validation (takes priority)
+    if (testCase.executionConfig && testCase.testHarness) {
+      const execResult = await executionValidator.validate(
+        output,
+        testCase.executionConfig,
+        testCase.testHarness
+      )
+      return {
+        passed: execResult.passed,
+        score: execResult.score,
+        details: execResult.details,
+        errors: execResult.errors,
+      }
+    }
+
     // Custom validation function
     if (testCase.validationFn) {
       return testCase.validationFn(output)
@@ -220,12 +252,16 @@ export class BenchmarkRunner {
   }
 
   /**
-   * Create timeout promise
+   * Create timeout promise with cleanup capability (fixes #6 memory leak).
+   * Returns both the promise and a cleanup function to clear the timer.
    */
-  private createTimeoutPromise(ms: number): Promise<never> {
-    return new Promise((_, reject) => {
-      setTimeout(() => reject(new Error(`Timeout after ${ms}ms`)), ms)
+  private createTimeoutPromise(ms: number): { promise: Promise<never>; cleanup: () => void } {
+    let timeoutId: ReturnType<typeof setTimeout>
+    const promise = new Promise<never>((_, reject) => {
+      timeoutId = setTimeout(() => reject(new Error(`Timeout after ${ms}ms`)), ms)
     })
+    const cleanup = () => clearTimeout(timeoutId)
+    return { promise, cleanup }
   }
 
   /**
@@ -262,26 +298,31 @@ export class BenchmarkRunner {
     const passed = results.filter(r => r.passed)
     const totalTokens = results.reduce((sum, r) => sum + r.tokensUsed, 0)
 
-    // Score by category
-    const scoreByCategory: Record<BenchmarkCategory, CategoryScore> = {} as any
+    // Score by category (fixes #4 - division by zero protection)
+    const scoreByCategory: Record<BenchmarkCategory, CategoryScore> = {} as Record<BenchmarkCategory, CategoryScore>
     const categories = [...new Set(results.map(r => r.category))]
     for (const cat of categories) {
       const catResults = results.filter(r => r.category === cat)
       const catPassed = catResults.filter(r => r.passed)
       scoreByCategory[cat] = {
-        score: catResults.reduce((sum, r) => sum + r.score, 0) / catResults.length,
+        score: catResults.length > 0 ? catResults.reduce((sum, r) => sum + r.score, 0) / catResults.length : 0,
         passed: catPassed.length,
         total: catResults.length,
       }
     }
 
-    // Score by difficulty
+    // Score by difficulty (fixes #4 - division by zero protection)
     const scoreByDifficulty: Record<string, number> = {}
     const difficulties = [...new Set(results.map(r => r.difficulty))]
     for (const diff of difficulties) {
       const diffResults = results.filter(r => r.difficulty === diff)
-      scoreByDifficulty[diff] = diffResults.reduce((sum, r) => sum + r.score, 0) / diffResults.length
+      scoreByDifficulty[diff] = diffResults.length > 0
+        ? diffResults.reduce((sum, r) => sum + r.score, 0) / diffResults.length
+        : 0
     }
+
+    // Calculate overall scores with division by zero protection (fixes #4)
+    const resultsCount = results.length || 1 // Prevent division by zero
 
     return {
       suiteId: suite.id,
@@ -292,13 +333,14 @@ export class BenchmarkRunner {
       passedCases: passed.length,
       failedCases: results.length - passed.length,
       skippedCases: suite.cases.length - results.length,
-      overallScore: results.reduce((sum, r) => sum + r.score, 0) / results.length,
+      overallScore: results.length > 0 ? results.reduce((sum, r) => sum + r.score, 0) / results.length : 0,
       scoreByCategory,
       scoreByDifficulty,
       totalTokensUsed: totalTokens,
-      avgTokensPerCase: totalTokens / results.length,
-      avgDurationMs: totalDurationMs / results.length,
+      avgTokensPerCase: totalTokens / resultsCount,
+      avgDurationMs: totalDurationMs / resultsCount,
       results,
+      executionStats: computeExecutionStats(results),
       agentName,
     }
   }

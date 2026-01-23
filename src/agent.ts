@@ -94,13 +94,22 @@ export class AgentRegistry {
     return Array.from(this.agents.keys())
   }
 
+  /**
+   * Create and initialize an agent.
+   * Errors during initialization are caught and logged (fixes #5).
+   */
   async createAgent(name: string, config?: AgentConfig): Promise<Agent | null> {
     const factory = this.agents.get(name)
     if (!factory) return null
 
     const agent = factory({ name, ...config })
     if (agent.initialize) {
-      await agent.initialize(config)
+      try {
+        await agent.initialize(config)
+      } catch (error) {
+        console.error(`[AgentRegistry] Failed to initialize agent "${name}":`, error)
+        return null
+      }
     }
     return agent
   }

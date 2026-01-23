@@ -6,13 +6,14 @@
   "type": "module",
   "main": "src/index.ts",
   "bin": {
-    "agent-benchmark": "./bin/magi-benchmark"
+    "agent-benchmark": "./bin/agent-benchmark"
   },
   "exports": {
     ".": "./src/index.ts",
     "./suites/*": "./src/suites/*.ts",
     "./types": "./src/types.ts",
-    "./agent": "./src/agent.ts"
+    "./agent": "./src/agent.ts",
+    "./agents": "./src/agents/index.ts"
   },
   "scripts": {
     "dev": "bun run src/cli.ts",
@@ -20,7 +21,14 @@
     "typecheck": "tsc --noEmit",
     "build": "bun build src/index.ts --outdir dist --target node",
     "list": "bun run src/cli.ts list",
-    "leaderboard": "bun run src/cli.ts leaderboard"
+    "leaderboard": "bun run src/cli.ts leaderboard",
+    "dashboard": "cd dashboard && bun run dev",
+    "dashboard:server": "cd dashboard && bun run server",
+    "dashboard:install": "cd dashboard && bun install",
+    "dashboard:build": "cd dashboard && bun run build",
+    "benchmark": "bun scripts/run-benchmarks.ts",
+    "benchmark:all": "bun scripts/run-benchmarks.ts --agent=all",
+    "benchmark:easy": "bun scripts/run-benchmarks.ts --difficulty=easy"
   },
   "dependencies": {
     "glob": "^13.0.0",
