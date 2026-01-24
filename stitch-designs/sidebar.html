@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Benchmark Navigation Sidebar</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#10b77f",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#10221c",
+                        "sidebar-bg": "#0b1612", // Slightly darker than main background for sidebar
+                        "item-active": "#162e25",
+                        "item-hover": "#13251f",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for Webkit browsers */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #23483c;
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white overflow-hidden">
+<div class="flex h-screen w-full">
+<!-- Sidebar Container -->
+<aside class="flex w-80 min-w-[320px] flex-col border-r border-white/5 bg-sidebar-bg h-full shadow-xl z-20">
+<!-- Header Section -->
+<div class="flex flex-col p-4 pb-2">
+<div class="flex items-center gap-3 mb-6 px-2">
+<div class="flex items-center justify-center size-10 rounded-xl bg-gradient-to-br from-primary to-[#0b7a55] shadow-lg shadow-primary/20 text-white">
+<span class="material-symbols-outlined" style="font-size: 24px;">analytics</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-white text-lg font-bold tracking-tight">Benchmark AI</h1>
+<span class="text-xs text-primary/80 font-medium uppercase tracking-wider">Performance Lab</span>
+</div>
+</div>
+<!-- Search Bar -->
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400 group-focus-within:text-primary transition-colors">
+<span class="material-symbols-outlined" style="font-size: 20px;">search</span>
+</div>
+<input class="block w-full rounded-lg border-0 bg-white/5 py-2.5 pl-10 pr-4 text-sm text-white placeholder:text-slate-500 focus:ring-1 focus:ring-primary focus:bg-white/10 transition-all duration-200" placeholder="Filter benchmarks..." type="text"/>
+</div>
+</div>
+<!-- List Section Header -->
+<div class="px-6 py-2 flex items-center justify-between border-b border-white/5">
+<span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Recent Runs</span>
+<span class="text-xs text-slate-600 bg-white/5 px-2 py-0.5 rounded-full">12</span>
+</div>
+<!-- Scrollable List -->
+<div class="flex-1 overflow-y-auto custom-scrollbar flex flex-col">
+<!-- Active Item -->
+<a class="relative flex flex-col gap-1 border-b border-white/5 bg-item-active py-4 px-5 transition-all duration-200 group" href="#">
+<!-- Left Accent Border -->
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-primary shadow-[0_0_12px_rgba(16,183,127,0.5)]"></div>
+<div class="flex items-start justify-between mb-1">
+<h3 class="text-sm font-semibold text-white leading-tight">Llama-3-70b Evaluation</h3>
+<span class="flex h-2 w-2 rounded-full bg-primary shadow-[0_0_8px_rgba(16,183,127,0.8)]"></span>
+</div>
+<div class="flex items-center gap-2 text-xs text-slate-400">
+<span class="material-symbols-outlined text-[16px]">schedule</span>
+<span>2h ago</span>
+<span class="text-slate-600">•</span>
+<span class="inline-flex items-center rounded-md bg-primary/20 px-1.5 py-0.5 text-[10px] font-medium text-primary ring-1 ring-inset ring-primary/30">
+                            v1.4-alpha
+                        </span>
+</div>
+</a>
+<!-- Inactive Item -->
+<a class="relative flex flex-col gap-1 border-b border-white/5 bg-transparent py-4 px-5 transition-all duration-200 hover:bg-item-hover group" href="#">
+<div class="flex items-start justify-between mb-1">
+<h3 class="text-sm font-medium text-slate-300 group-hover:text-white transition-colors">GPT-4-Turbo Regression</h3>
+<!-- Status indicator (finished) -->
+<span class="material-symbols-outlined text-slate-600 text-[16px]" title="Completed">check_circle</span>
+</div>
+<div class="flex items-center gap-2 text-xs text-slate-500 group-hover:text-slate-400">
+<span class="material-symbols-outlined text-[16px]">schedule</span>
+<span>5h ago</span>
+<span class="text-slate-700">•</span>
+<span class="inline-flex items-center rounded-md bg-white/5 px-1.5 py-0.5 text-[10px] font-medium text-slate-400 ring-1 ring-inset ring-white/10 group-hover:bg-white/10 group-hover:text-slate-300 transition-colors">
+                            v1.3-stable
+                        </span>
+</div>
+</a>
+<!-- Inactive Item -->
+<a class="relative flex flex-col gap-1 border-b border-white/5 bg-transparent py-4 px-5 transition-all duration-200 hover:bg-item-hover group" href="#">
+<div class="flex items-start justify-between mb-1">
+<h3 class="text-sm font-medium text-slate-300 group-hover:text-white transition-colors">Mistral-Large Fine-tune</h3>
+<span class="material-symbols-outlined text-slate-600 text-[16px]" title="Completed">check_circle</span>
+</div>
+<div class="flex items-center gap-2 text-xs text-slate-500 group-hover:text-slate-400">
+<span class="material-symbols-outlined text-[16px]">schedule</span>
+<span>1d ago</span>
+<span class="text-slate-700">•</span>
+<span class="inline-flex items-center rounded-md bg-white/5 px-1.5 py-0.5 text-[10px] font-medium text-slate-400 ring-1 ring-inset ring-white/10 group-hover:bg-white/10 group-hover:text-slate-300 transition-colors">
+                            v1.4-beta
+                        </span>
+</div>
+</a>
+<!-- Inactive Item -->
+<a class="relative flex flex-col gap-1 border-b border-white/5 bg-transparent py-4 px-5 transition-all duration-200 hover:bg-item-hover group" href="#">
+<div class="flex items-start justify-between mb-1">
+<h3 class="text-sm font-medium text-slate-300 group-hover:text-white transition-colors">Claude-3-Opus Benchmark</h3>
+<span class="material-symbols-outlined text-amber-500/70 text-[16px]" title="Warning">warning</span>
+</div>
+<div class="flex items-center gap-2 text-xs text-slate-500 group-hover:text-slate-400">
+<span class="material-symbols-outlined text-[16px]">schedule</span>
+<span>2d ago</span>
+<span class="text-slate-700">•</span>
+<span class="inline-flex items-center rounded-md bg-white/5 px-1.5 py-0.5 text-[10px] font-medium text-slate-400 ring-1 ring-inset ring-white/10 group-hover:bg-white/10 group-hover:text-slate-300 transition-colors">
+                            v2.0-rc1
+                        </span>
+</div>
+</a>
+<!-- Inactive Item -->
+<a class="relative flex flex-col gap-1 border-b border-white/5 bg-transparent py-4 px-5 transition-all duration-200 hover:bg-item-hover group" href="#">
+<div class="flex items-start justify-between mb-1">
+<h3 class="text-sm font-medium text-slate-300 group-hover:text-white transition-colors">Falcon-180b Test</h3>
+<span class="material-symbols-outlined text-slate-600 text-[16px]" title="Completed">check_circle</span>
+</div>
+<div class="flex items-center gap-2 text-xs text-slate-500 group-hover:text-slate-400">
+<span class="material-symbols-outlined text-[16px]">schedule</span>
+<span>3d ago</span>
+<span class="text-slate-700">•</span>
+<span class="inline-flex items-center rounded-md bg-white/5 px-1.5 py-0.5 text-[10px] font-medium text-slate-400 ring-1 ring-inset ring-white/10 group-hover:bg-white/10 group-hover:text-slate-300 transition-colors">
+                            v1.2-legacy
+                        </span>
+</div>
+</a>
+<!-- Inactive Item -->
+<a class="relative flex flex-col gap-1 border-b border-white/5 bg-transparent py-4 px-5 transition-all duration-200 hover:bg-item-hover group" href="#">
+<div class="flex items-start justify-between mb-1">
+<h3 class="text-sm font-medium text-slate-300 group-hover:text-white transition-colors">DeepSeek-Coder Validation</h3>
+<span class="material-symbols-outlined text-slate-600 text-[16px]" title="Completed">check_circle</span>
+</div>
+<div class="flex items-center gap-2 text-xs text-slate-500 group-hover:text-slate-400">
+<span class="material-symbols-outlined text-[16px]">schedule</span>
+<span>4d ago</span>
+<span class="text-slate-700">•</span>
+<span class="inline-flex items-center rounded-md bg-white/5 px-1.5 py-0.5 text-[10px] font-medium text-slate-400 ring-1 ring-inset ring-white/10 group-hover:bg-white/10 group-hover:text-slate-300 transition-colors">
+                            v0.9-exp
+                        </span>
+</div>
+</a>
+</div>
+<!-- User/Settings Footer -->
+<div class="p-4 border-t border-white/5 mt-auto">
+<button class="flex w-full items-center gap-3 rounded-lg p-2 transition-colors hover:bg-white/5">
+<div class="size-8 rounded-full bg-cover bg-center ring-2 ring-white/10" data-alt="User profile avatar gradient" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDuDA8ux4h4ysFzk9oei6_79Ar2MHqozic03Bm_paKE2knosM41kXI-PhtVpsLKp4JSSLU96D-S6yQjSUeOyk3h5xD6wMI-jdGfl8BWCvh1-OW1-mucpzvQwDu5n3hiPVXmzfde3ad8FnTwrmu5Tb0WPUmv8_cYrYG7-ryC6bBRGeX_idooZblNpoDgHgR1jyMcxWL-vx3whrXIOV_biUhRldZgeBjt_stts5nhuZDz9Zx_os3eC-IBBEcCHBzhPgU73webXqZKOhza");'></div>
+<div class="flex flex-col items-start">
+<span class="text-sm font-medium text-white">Alex Morgan</span>
+<span class="text-xs text-slate-500">Lead Engineer</span>
+</div>
+<span class="material-symbols-outlined ml-auto text-slate-500">settings</span>
+</button>
+</div>
+</aside>
+<!-- Main Content Area (Visual Placeholder) -->
+<main class="flex-1 flex flex-col relative bg-background-dark overflow-hidden">
+<!-- Top Navigation Placeholder -->
+<div class="h-16 border-b border-white/5 flex items-center justify-between px-8 bg-[#11221c]">
+<div class="flex items-center gap-4 text-slate-400">
+<span class="material-symbols-outlined">menu_open</span>
+<span class="text-sm font-medium">Dashboard / Llama-3-70b Evaluation</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary/10 text-primary text-sm font-medium hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined text-[18px]">play_arrow</span>
+                        Run Benchmark
+                     </button>
+<span class="material-symbols-outlined text-slate-400">notifications</span>
+</div>
+</div>
+<!-- Dashboard Content Placeholder -->
+<div class="flex-1 p-8 overflow-y-auto">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+<!-- Stats Card 1 -->
+<div class="rounded-xl border border-white/5 bg-[#162e25] p-6 shadow-lg">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 rounded-lg bg-primary/10 text-primary">
+<span class="material-symbols-outlined">speed</span>
+</div>
+<span class="text-xs font-medium text-green-400 flex items-center gap-1">+12% <span class="material-symbols-outlined text-[14px]">trending_up</span></span>
+</div>
+<h3 class="text-slate-400 text-sm font-medium">Tokens / Sec</h3>
+<p class="text-3xl font-bold text-white mt-1">142.5</p>
+</div>
+<!-- Stats Card 2 -->
+<div class="rounded-xl border border-white/5 bg-[#162e25] p-6 shadow-lg">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 rounded-lg bg-blue-500/10 text-blue-400">
+<span class="material-symbols-outlined">memory</span>
+</div>
+<span class="text-xs font-medium text-slate-500 flex items-center gap-1">Stable</span>
+</div>
+<h3 class="text-slate-400 text-sm font-medium">VRAM Usage</h3>
+<p class="text-3xl font-bold text-white mt-1">78%</p>
+</div>
+<!-- Stats Card 3 -->
+<div class="rounded-xl border border-white/5 bg-[#162e25] p-6 shadow-lg">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 rounded-lg bg-purple-500/10 text-purple-400">
+<span class="material-symbols-outlined">psychology</span>
+</div>
+<span class="text-xs font-medium text-green-400 flex items-center gap-1">+2.4% <span class="material-symbols-outlined text-[14px]">trending_up</span></span>
+</div>
+<h3 class="text-slate-400 text-sm font-medium">MMLU Score</h3>
+<p class="text-3xl font-bold text-white mt-1">82.4</p>
+</div>
+</div>
+<!-- Main Chart Placeholder -->
+<div class="rounded-xl border border-white/5 bg-[#162e25] p-6 shadow-lg h-96 relative flex items-center justify-center overflow-hidden">
+<div class="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-primary/40 via-transparent to-transparent"></div>
+<div class="text-center">
+<span class="material-symbols-outlined text-6xl text-white/10 mb-4">monitoring</span>
+<p class="text-slate-500">Visualization Placeholder</p>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

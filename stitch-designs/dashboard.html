@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Performance Analytics Dashboard</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Config -->
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#19e680",
+              "background-light": "#f6f8f7",
+              "background-dark": "#0f172a", /* slate-900 equivalent */
+              "card-dark": "#1e293b", /* slate-800 equivalent */
+              "border-dark": "#334155", /* slate-700 equivalent */
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"]
+            },
+            borderRadius: {
+              "DEFAULT": "0.25rem",
+              "lg": "0.5rem",
+              "xl": "0.75rem",
+              "2xl": "1rem",
+              "full": "9999px"
+            },
+          },
+        },
+      }
+    </script>
+<style>
+      /* Custom scrollbar for dark theme consistency */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #0f172a; 
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #334155; 
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #475569; 
+      }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display min-h-screen flex flex-col overflow-x-hidden transition-colors duration-200">
+<!-- Main Container -->
+<div class="flex h-full min-h-screen w-full flex-col">
+<!-- Top Navigation -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-border-dark bg-white dark:bg-background-dark px-4 sm:px-6 lg:px-10 py-4 sticky top-0 z-50">
+<div class="flex items-center gap-4 text-slate-900 dark:text-white">
+<div class="size-8 flex items-center justify-center rounded bg-primary/20 text-primary">
+<span class="material-symbols-outlined text-2xl">monitoring</span>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-tight">Performance Analytics</h2>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center justify-center overflow-hidden rounded-lg h-9 px-4 bg-primary text-slate-900 text-sm font-bold leading-normal tracking-[0.015em] transition hover:opacity-90 shadow-sm shadow-primary/20">
+<span class="truncate">Last 24h</span>
+</button>
+<button class="flex items-center justify-center overflow-hidden rounded-lg h-9 w-9 bg-slate-100 dark:bg-card-dark border border-slate-200 dark:border-border-dark text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+<span class="material-symbols-outlined text-[20px]">calendar_today</span>
+</button>
+<button class="flex items-center justify-center overflow-hidden rounded-lg h-9 w-9 bg-slate-100 dark:bg-card-dark border border-slate-200 dark:border-border-dark text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+<span class="material-symbols-outlined text-[20px]">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-8">
+<!-- Metric Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+<!-- Card 1: Pass Rate -->
+<div class="flex flex-col gap-1 rounded-xl p-5 bg-white dark:bg-card-dark border border-slate-200 dark:border-border-dark shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between mb-2">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium uppercase tracking-wide">Pass Rate</p>
+<span class="material-symbols-outlined text-primary text-xl">check_circle</span>
+</div>
+<div class="flex items-baseline gap-2">
+<p class="text-slate-900 dark:text-white text-3xl font-bold tracking-tight">82%</p>
+<div class="flex items-center text-primary text-sm font-medium bg-primary/10 px-1.5 py-0.5 rounded">
+<span class="material-symbols-outlined text-sm mr-0.5">trending_up</span>
+<span>2.4%</span>
+</div>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-700 h-1.5 rounded-full mt-3 overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 82%"></div>
+</div>
+</div>
+<!-- Card 2: Total Duration -->
+<div class="flex flex-col gap-1 rounded-xl p-5 bg-white dark:bg-card-dark border border-slate-200 dark:border-border-dark shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between mb-2">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium uppercase tracking-wide">Total Duration</p>
+<span class="material-symbols-outlined text-slate-400 text-xl">timer</span>
+</div>
+<p class="text-slate-900 dark:text-white text-3xl font-bold tracking-tight">4h 12m</p>
+<p class="text-slate-400 text-sm mt-1">Avg 12m per session</p>
+</div>
+<!-- Card 3: Tokens Used -->
+<div class="flex flex-col gap-1 rounded-xl p-5 bg-white dark:bg-card-dark border border-slate-200 dark:border-border-dark shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between mb-2">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium uppercase tracking-wide">Tokens Used</p>
+<span class="material-symbols-outlined text-slate-400 text-xl">token</span>
+</div>
+<p class="text-slate-900 dark:text-white text-3xl font-bold tracking-tight">1.2M</p>
+<p class="text-slate-400 text-sm mt-1">Within monthly budget</p>
+</div>
+<!-- Card 4: Failed Cases -->
+<div class="flex flex-col gap-1 rounded-xl p-5 bg-white dark:bg-card-dark border border-slate-200 dark:border-border-dark shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between mb-2">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium uppercase tracking-wide">Failed Cases</p>
+<span class="material-symbols-outlined text-red-500 text-xl">error</span>
+</div>
+<div class="flex items-baseline gap-2">
+<p class="text-slate-900 dark:text-white text-3xl font-bold tracking-tight">14</p>
+<div class="flex items-center text-red-500 text-sm font-medium bg-red-500/10 px-1.5 py-0.5 rounded">
+<span class="material-symbols-outlined text-sm mr-0.5">trending_up</span>
+<span>2</span>
+</div>
+</div>
+<p class="text-slate-400 text-sm mt-1">Critical errors: 3</p>
+</div>
+</div>
+<!-- Charts Section -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+<!-- Chart 1: Score by Category -->
+<div class="flex flex-col gap-4 p-6 rounded-xl bg-white dark:bg-card-dark border border-slate-200 dark:border-border-dark shadow-sm">
+<div class="flex justify-between items-center">
+<div>
+<h3 class="text-slate-900 dark:text-white text-base font-bold">Score by Category</h3>
+<p class="text-slate-500 dark:text-slate-400 text-sm">Performance breakdown across key metrics</p>
+</div>
+<span class="px-2 py-1 rounded bg-slate-100 dark:bg-slate-700 text-xs font-medium text-slate-600 dark:text-slate-300">All Time</span>
+</div>
+<div class="flex flex-col gap-5 py-2">
+<!-- Item 1 -->
+<div class="group">
+<div class="flex justify-between text-sm mb-1.5">
+<span class="font-medium text-slate-700 dark:text-slate-200">Logic</span>
+<span class="font-bold text-slate-900 dark:text-white">88%</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full transition-all duration-1000 group-hover:bg-[#15c56e]" style="width: 88%"></div>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="group">
+<div class="flex justify-between text-sm mb-1.5">
+<span class="font-medium text-slate-700 dark:text-slate-200">Memory</span>
+<span class="font-bold text-slate-900 dark:text-white">72%</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full transition-all duration-1000 group-hover:bg-[#15c56e]" style="width: 72%"></div>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="group">
+<div class="flex justify-between text-sm mb-1.5">
+<span class="font-medium text-slate-700 dark:text-slate-200">Creativity</span>
+<span class="font-bold text-slate-900 dark:text-white">65%</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full transition-all duration-1000 group-hover:bg-[#15c56e]" style="width: 65%"></div>
+</div>
+</div>
+<!-- Item 4 -->
+<div class="group">
+<div class="flex justify-between text-sm mb-1.5">
+<span class="font-medium text-slate-700 dark:text-slate-200">Speed</span>
+<span class="font-bold text-slate-900 dark:text-white">94%</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full transition-all duration-1000 group-hover:bg-[#15c56e]" style="width: 94%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Chart 2: Score by Difficulty -->
+<div class="flex flex-col gap-4 p-6 rounded-xl bg-white dark:bg-card-dark border border-slate-200 dark:border-border-dark shadow-sm h-full">
+<div class="flex justify-between items-center mb-2">
+<div>
+<h3 class="text-slate-900 dark:text-white text-base font-bold">Score by Difficulty</h3>
+<p class="text-slate-500 dark:text-slate-400 text-sm">Success rate per difficulty level</p>
+</div>
+<button class="text-slate-400 hover:text-white transition">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</div>
+<div class="flex-1 flex items-end justify-between px-6 gap-8 min-h-[180px]">
+<!-- Bar 1: Easy -->
+<div class="flex flex-col items-center gap-2 w-full group cursor-pointer">
+<div class="relative w-full bg-slate-100 dark:bg-slate-700 rounded-t-lg h-48 flex items-end justify-center overflow-hidden">
+<div class="w-full bg-primary/80 group-hover:bg-primary transition-all duration-300 rounded-t-lg relative" style="height: 92%;">
+<span class="opacity-0 group-hover:opacity-100 absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-xs px-2 py-1 rounded transition-opacity">92%</span>
+</div>
+</div>
+<span class="text-sm font-medium text-slate-600 dark:text-slate-300">Easy</span>
+</div>
+<!-- Bar 2: Medium -->
+<div class="flex flex-col items-center gap-2 w-full group cursor-pointer">
+<div class="relative w-full bg-slate-100 dark:bg-slate-700 rounded-t-lg h-48 flex items-end justify-center overflow-hidden">
+<div class="w-full bg-primary/60 group-hover:bg-primary transition-all duration-300 rounded-t-lg relative" style="height: 74%;">
+<span class="opacity-0 group-hover:opacity-100 absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-xs px-2 py-1 rounded transition-opacity">74%</span>
+</div>
+</div>
+<span class="text-sm font-medium text-slate-600 dark:text-slate-300">Medium</span>
+</div>
+<!-- Bar 3: Hard -->
+<div class="flex flex-col items-center gap-2 w-full group cursor-pointer">
+<div class="relative w-full bg-slate-100 dark:bg-slate-700 rounded-t-lg h-48 flex items-end justify-center overflow-hidden">
+<div class="w-full bg-primary/40 group-hover:bg-primary transition-all duration-300 rounded-t-lg relative" style="height: 45%;">
+<span class="opacity-0 group-hover:opacity-100 absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-xs px-2 py-1 rounded transition-opacity">45%</span>
+</div>
+</div>
+<span class="text-sm font-medium text-slate-600 dark:text-slate-300">Hard</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Recent Test Runs Table -->
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-between px-1">
+<h3 class="text-slate-900 dark:text-white text-lg font-bold leading-tight">Recent Test Runs</h3>
+<a class="text-primary text-sm font-semibold hover:underline" href="#">View All</a>
+</div>
+<div class="w-full overflow-hidden rounded-xl border border-slate-200 dark:border-border-dark bg-white dark:bg-card-dark shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full min-w-[800px]">
+<thead class="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-border-dark">
+<tr>
+<th class="px-6 py-4 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider w-[30%]">Test Name</th>
+<th class="px-6 py-4 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider w-[15%]">Status</th>
+<th class="px-6 py-4 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider w-[20%]">Duration</th>
+<th class="px-6 py-4 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider w-[15%]">Tokens</th>
+<th class="px-6 py-4 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider w-[20%]">Timestamp</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-200 dark:divide-border-dark">
+<tr class="group hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<span class="material-symbols-outlined text-slate-400 mr-3 text-lg">lock</span>
+<span class="text-sm font-medium text-slate-900 dark:text-white">Authentication Flow</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-green-600 dark:text-primary border border-primary/20">
+                                            Passed
+                                        </span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-300">2m 14s</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-300 font-mono">450</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400">10 min ago</td>
+</tr>
+<tr class="group hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<span class="material-symbols-outlined text-slate-400 mr-3 text-lg">database</span>
+<span class="text-sm font-medium text-slate-900 dark:text-white">Data Processing</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20">
+                                            Failed
+                                        </span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-300">45s</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-300 font-mono">120</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400">2 hours ago</td>
+</tr>
+<tr class="group hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<span class="material-symbols-outlined text-slate-400 mr-3 text-lg">image</span>
+<span class="text-sm font-medium text-slate-900 dark:text-white">Image Generation</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-green-600 dark:text-primary border border-primary/20">
+                                            Passed
+                                        </span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-300">1m 30s</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-300 font-mono">2.1k</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400">5 hours ago</td>
+</tr>
+<tr class="group hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<span class="material-symbols-outlined text-slate-400 mr-3 text-lg">search</span>
+<span class="text-sm font-medium text-slate-900 dark:text-white">Search Indexing</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-green-600 dark:text-primary border border-primary/20">
+                                            Passed
+                                        </span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-300">3m 10s</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-300 font-mono">890</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400">Yesterday</td>
+</tr>
+<tr class="group hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<span class="material-symbols-outlined text-slate-400 mr-3 text-lg">person_add</span>
+<span class="text-sm font-medium text-slate-900 dark:text-white">User Registration</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-green-600 dark:text-primary border border-primary/20">
+                                            Passed
+                                        </span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-300">1m 05s</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-300 font-mono">300</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400">Yesterday</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>
