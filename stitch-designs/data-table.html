@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Detailed Performance Log Table</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#197fe6",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#111921",
+                        "card-dark": "#1a2632", // Matches the component examples
+                        "border-dark": "#344d65", // Matches the component examples
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "mono": ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New", "monospace"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for dark theme tables */
+        .dark ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        .dark ::-webkit-scrollbar-track {
+            background: #111921; 
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #344d65; 
+            border-radius: 4px;
+        }
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background: #4b6a88; 
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display antialiased min-h-screen flex flex-col">
+<!-- Main Layout -->
+<div class="layout-container flex h-full grow flex-col">
+<div class="px-4 md:px-8 lg:px-12 flex flex-1 justify-center py-8">
+<div class="layout-content-container flex flex-col w-full max-w-[1200px] flex-1">
+<!-- Breadcrumbs -->
+<nav class="flex gap-2 p-4 pb-0 items-center text-sm">
+<a class="text-[#93adc8] hover:text-primary transition-colors font-medium leading-normal" href="#">Analytics</a>
+<span class="material-symbols-outlined text-[#93adc8] text-sm font-bold">chevron_right</span>
+<a class="text-[#93adc8] hover:text-primary transition-colors font-medium leading-normal" href="#">System Health</a>
+<span class="material-symbols-outlined text-[#93adc8] text-sm font-bold">chevron_right</span>
+<span class="text-white font-medium leading-normal">Performance Logs</span>
+</nav>
+<!-- Page Header -->
+<div class="flex flex-wrap justify-between items-end gap-4 p-4 mb-4">
+<div class="flex min-w-72 flex-col gap-2">
+<h1 class="text-white tracking-tight text-[32px] font-bold leading-tight">Performance Logs</h1>
+<p class="text-[#93adc8] text-base font-normal leading-normal">Monitor test execution, latency metrics, and error rates in real-time.</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex items-center justify-center gap-2 rounded-lg bg-card-dark border border-border-dark px-4 py-2.5 hover:bg-[#243647] transition-colors">
+<span class="material-symbols-outlined text-white text-[20px]">download</span>
+<span class="text-white text-sm font-medium">Export CSV</span>
+</button>
+<button class="flex items-center justify-center gap-2 rounded-lg bg-primary hover:bg-blue-600 transition-colors px-4 py-2.5 shadow-lg shadow-blue-500/20">
+<span class="material-symbols-outlined text-white text-[20px]">refresh</span>
+<span class="text-white text-sm font-medium">Refresh</span>
+</button>
+</div>
+</div>
+<!-- Main Card Container -->
+<div class="rounded-xl border border-border-dark bg-card-dark overflow-hidden shadow-xl">
+<!-- Controls Toolbar -->
+<div class="p-4 border-b border-border-dark flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
+<!-- Search -->
+<div class="relative w-full md:max-w-md">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-[#93adc8] pointer-events-none">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</span>
+<input class="w-full bg-[#111921] border border-border-dark text-white text-sm rounded-lg focus:ring-1 focus:ring-primary focus:border-primary block pl-10 p-2.5 placeholder-[#93adc8]" placeholder="Search by ID, Test Name, or Error Code..." type="text"/>
+</div>
+<!-- Filters -->
+<div class="flex flex-wrap gap-3 w-full md:w-auto">
+<!-- Status Filter -->
+<div class="relative group">
+<button class="flex items-center gap-2 bg-[#111921] border border-border-dark hover:border-[#4b6a88] text-white px-3 py-2 rounded-lg text-sm font-medium transition-colors">
+<span>Status: All</span>
+<span class="material-symbols-outlined text-[18px] text-[#93adc8]">expand_more</span>
+</button>
+</div>
+<!-- Difficulty Filter -->
+<div class="relative group">
+<button class="flex items-center gap-2 bg-[#111921] border border-border-dark hover:border-[#4b6a88] text-white px-3 py-2 rounded-lg text-sm font-medium transition-colors">
+<span>Difficulty: All</span>
+<span class="material-symbols-outlined text-[18px] text-[#93adc8]">expand_more</span>
+</button>
+</div>
+<!-- Date Range -->
+<div class="relative group">
+<button class="flex items-center gap-2 bg-[#111921] border border-border-dark hover:border-[#4b6a88] text-white px-3 py-2 rounded-lg text-sm font-medium transition-colors">
+<span class="material-symbols-outlined text-[18px] text-[#93adc8]">calendar_today</span>
+<span>Last 7 Days</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Table Container -->
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-[#1a2632] border-b border-border-dark">
+<th class="p-4 text-xs font-semibold tracking-wide text-[#93adc8] uppercase cursor-pointer hover:text-white group w-[120px]">
+<div class="flex items-center gap-1">
+                                            ID
+                                            <span class="material-symbols-outlined text-[16px] opacity-0 group-hover:opacity-100 transition-opacity">arrow_downward</span>
+</div>
+</th>
+<th class="p-4 text-xs font-semibold tracking-wide text-[#93adc8] uppercase cursor-pointer hover:text-white group w-[25%]">
+<div class="flex items-center gap-1">
+                                            Test Name
+                                            <span class="material-symbols-outlined text-[16px] opacity-0 group-hover:opacity-100 transition-opacity">unfold_more</span>
+</div>
+</th>
+<th class="p-4 text-xs font-semibold tracking-wide text-[#93adc8] uppercase cursor-pointer hover:text-white group w-[120px]">
+<div class="flex items-center gap-1">
+                                            Status
+                                            <span class="material-symbols-outlined text-[16px] opacity-0 group-hover:opacity-100 transition-opacity">unfold_more</span>
+</div>
+</th>
+<th class="p-4 text-xs font-semibold tracking-wide text-[#93adc8] uppercase cursor-pointer hover:text-white group w-[120px]">
+<div class="flex items-center gap-1">
+                                            Difficulty
+                                            <span class="material-symbols-outlined text-[16px] opacity-0 group-hover:opacity-100 transition-opacity">unfold_more</span>
+</div>
+</th>
+<th class="p-4 text-xs font-semibold tracking-wide text-[#93adc8] uppercase cursor-pointer hover:text-white group w-[100px]">
+<div class="flex items-center gap-1">
+                                            Score
+                                            <span class="material-symbols-outlined text-[16px] opacity-0 group-hover:opacity-100 transition-opacity">unfold_more</span>
+</div>
+</th>
+<th class="p-4 text-xs font-semibold tracking-wide text-[#93adc8] uppercase cursor-pointer hover:text-white group">
+<div class="flex items-center gap-1">
+                                            Timestamp
+                                            <span class="material-symbols-outlined text-[16px] text-primary">arrow_downward</span>
+</div>
+</th>
+<th class="p-4 w-[60px]"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-dark">
+<!-- Row 1: Active / Expanded -->
+<tr class="bg-[#243647] transition-colors cursor-pointer group hover:bg-[#2d4052]">
+<td class="p-4">
+<span class="font-mono text-sm text-white">#LOG-2394</span>
+</td>
+<td class="p-4">
+<div class="flex flex-col">
+<span class="text-white font-medium text-sm">Payment Gateway Latency</span>
+<span class="text-xs text-[#93adc8]">v2.4.1 (Stable)</span>
+</div>
+</td>
+<td class="p-4">
+<span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-2.5 py-1 text-xs font-medium text-emerald-400 border border-emerald-500/20">
+<span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
+                                            Passed
+                                        </span>
+</td>
+<td class="p-4">
+<span class="inline-flex items-center rounded-md bg-primary/10 px-2 py-1 text-xs font-medium text-blue-400 ring-1 ring-inset ring-blue-400/20">Easy</span>
+</td>
+<td class="p-4">
+<div class="flex items-center gap-2">
+<span class="text-sm font-medium text-white">98</span>
+<div class="h-1.5 w-12 rounded-full bg-[#111921] overflow-hidden">
+<div class="h-full rounded-full bg-emerald-500" style="width: 98%"></div>
+</div>
+</div>
+</td>
+<td class="p-4 text-sm text-[#93adc8]">
+                                        2 mins ago
+                                    </td>
+<td class="p-4 text-right">
+<button class="text-[#93adc8] hover:text-white transition-colors p-1 rounded-md hover:bg-white/5">
+<span class="material-symbols-outlined">expand_less</span>
+</button>
+</td>
+</tr>
+<!-- Expanded Details for Row 1 -->
+<tr class="bg-[#16202a] border-b border-border-dark">
+<td class="p-0" colspan="7">
+<div class="p-6 border-l-4 border-primary">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+<div class="space-y-1">
+<p class="text-xs text-[#93adc8] uppercase tracking-wider font-semibold">Response Time</p>
+<div class="flex items-baseline gap-2">
+<span class="text-xl font-bold text-white">240ms</span>
+<span class="text-xs text-emerald-400 flex items-center">
+<span class="material-symbols-outlined text-[14px]">arrow_downward</span>
+                                                            12% vs avg
+                                                        </span>
+</div>
+</div>
+<div class="space-y-1">
+<p class="text-xs text-[#93adc8] uppercase tracking-wider font-semibold">Memory Usage</p>
+<p class="text-xl font-bold text-white">128 MB</p>
+</div>
+<div class="space-y-1">
+<p class="text-xs text-[#93adc8] uppercase tracking-wider font-semibold">Tokens Processed</p>
+<p class="text-xl font-bold text-white">450</p>
+</div>
+</div>
+<div class="rounded-lg bg-[#0d131a] border border-border-dark p-4 font-mono text-xs overflow-x-auto">
+<div class="flex justify-between items-center mb-2 pb-2 border-b border-border-dark/50">
+<span class="text-[#93adc8]">Log Output</span>
+<button class="text-primary hover:text-blue-400 text-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">content_copy</span> Copy
+                                                    </button>
+</div>
+<pre class="text-slate-300">
+{
+  "event": "transaction_complete",
+  "latency_ms": 240,
+  "gateway": "stripe_v3",
+  "status_code": 200,
+  "trace_id": "req_8923hc8923x",
+  "region": "us-east-1"
+}</pre>
+</div>
+<div class="mt-4 flex gap-3">
+<button class="text-xs font-medium text-[#93adc8] hover:text-white underline underline-offset-4">View Full Trace</button>
+<button class="text-xs font-medium text-[#93adc8] hover:text-white underline underline-offset-4">Download Logs</button>
+</div>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-[#243647] transition-colors cursor-pointer group">
+<td class="p-4">
+<span class="font-mono text-sm text-[#93adc8]">#LOG-2393</span>
+</td>
+<td class="p-4">
+<div class="flex flex-col">
+<span class="text-white font-medium text-sm">User Auth Flow</span>
+<span class="text-xs text-[#93adc8]">v2.4.0</span>
+</div>
+</td>
+<td class="p-4">
+<span class="inline-flex items-center gap-1.5 rounded-full bg-rose-500/10 px-2.5 py-1 text-xs font-medium text-rose-400 border border-rose-500/20">
+<span class="material-symbols-outlined text-[14px]">error</span>
+                                            Failed
+                                        </span>
+</td>
+<td class="p-4">
+<span class="inline-flex items-center rounded-md bg-purple-500/10 px-2 py-1 text-xs font-medium text-purple-400 ring-1 ring-inset ring-purple-400/20">Hard</span>
+</td>
+<td class="p-4">
+<div class="flex items-center gap-2">
+<span class="text-sm font-medium text-white">45</span>
+<div class="h-1.5 w-12 rounded-full bg-[#111921] overflow-hidden">
+<div class="h-full rounded-full bg-rose-500" style="width: 45%"></div>
+</div>
+</div>
+</td>
+<td class="p-4 text-sm text-[#93adc8]">
+                                        5 mins ago
+                                    </td>
+<td class="p-4 text-right">
+<button class="text-[#93adc8] hover:text-white transition-colors p-1 rounded-md hover:bg-white/5">
+<span class="material-symbols-outlined">expand_more</span>
+</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-[#243647] transition-colors cursor-pointer group">
+<td class="p-4">
+<span class="font-mono text-sm text-[#93adc8]">#LOG-2392</span>
+</td>
+<td class="p-4">
+<div class="flex flex-col">
+<span class="text-white font-medium text-sm">Image Processing</span>
+<span class="text-xs text-[#93adc8]">v2.4.1</span>
+</div>
+</td>
+<td class="p-4">
+<span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-2.5 py-1 text-xs font-medium text-emerald-400 border border-emerald-500/20">
+<span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
+                                            Passed
+                                        </span>
+</td>
+<td class="p-4">
+<span class="inline-flex items-center rounded-md bg-amber-500/10 px-2 py-1 text-xs font-medium text-amber-400 ring-1 ring-inset ring-amber-400/20">Medium</span>
+</td>
+<td class="p-4">
+<div class="flex items-center gap-2">
+<span class="text-sm font-medium text-white">82</span>
+<div class="h-1.5 w-12 rounded-full bg-[#111921] overflow-hidden">
+<div class="h-full rounded-full bg-amber-500" style="width: 82%"></div>
+</div>
+</div>
+</td>
+<td class="p-4 text-sm text-[#93adc8]">
+                                        12 mins ago
+                                    </td>
+<td class="p-4 text-right">
+<button class="text-[#93adc8] hover:text-white transition-colors p-1 rounded-md hover:bg-white/5">
+<span class="material-symbols-outlined">expand_more</span>
+</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-[#243647] transition-colors cursor-pointer group">
+<td class="p-4">
+<span class="font-mono text-sm text-[#93adc8]">#LOG-2391</span>
+</td>
+<td class="p-4">
+<div class="flex flex-col">
+<span class="text-white font-medium text-sm">Database Query Optimization</span>
+<span class="text-xs text-[#93adc8]">v2.3.9</span>
+</div>
+</td>
+<td class="p-4">
+<span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-2.5 py-1 text-xs font-medium text-emerald-400 border border-emerald-500/20">
+<span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
+                                            Passed
+                                        </span>
+</td>
+<td class="p-4">
+<span class="inline-flex items-center rounded-md bg-primary/10 px-2 py-1 text-xs font-medium text-blue-400 ring-1 ring-inset ring-blue-400/20">Easy</span>
+</td>
+<td class="p-4">
+<div class="flex items-center gap-2">
+<span class="text-sm font-medium text-white">95</span>
+<div class="h-1.5 w-12 rounded-full bg-[#111921] overflow-hidden">
+<div class="h-full rounded-full bg-emerald-500" style="width: 95%"></div>
+</div>
+</div>
+</td>
+<td class="p-4 text-sm text-[#93adc8]">
+                                        18 mins ago
+                                    </td>
+<td class="p-4 text-right">
+<button class="text-[#93adc8] hover:text-white transition-colors p-1 rounded-md hover:bg-white/5">
+<span class="material-symbols-outlined">expand_more</span>
+</button>
+</td>
+</tr>
+<!-- Row 5 -->
+<tr class="hover:bg-[#243647] transition-colors cursor-pointer group">
+<td class="p-4">
+<span class="font-mono text-sm text-[#93adc8]">#LOG-2390</span>
+</td>
+<td class="p-4">
+<div class="flex flex-col">
+<span class="text-white font-medium text-sm">API Rate Limiting</span>
+<span class="text-xs text-[#93adc8]">v2.4.1</span>
+</div>
+</td>
+<td class="p-4">
+<span class="inline-flex items-center gap-1.5 rounded-full bg-rose-500/10 px-2.5 py-1 text-xs font-medium text-rose-400 border border-rose-500/20">
+<span class="material-symbols-outlined text-[14px]">error</span>
+                                            Failed
+                                        </span>
+</td>
+<td class="p-4">
+<span class="inline-flex items-center rounded-md bg-amber-500/10 px-2 py-1 text-xs font-medium text-amber-400 ring-1 ring-inset ring-amber-400/20">Medium</span>
+</td>
+<td class="p-4">
+<div class="flex items-center gap-2">
+<span class="text-sm font-medium text-white">60</span>
+<div class="h-1.5 w-12 rounded-full bg-[#111921] overflow-hidden">
+<div class="h-full rounded-full bg-amber-500" style="width: 60%"></div>
+</div>
+</div>
+</td>
+<td class="p-4 text-sm text-[#93adc8]">
+                                        25 mins ago
+                                    </td>
+<td class="p-4 text-right">
+<button class="text-[#93adc8] hover:text-white transition-colors p-1 rounded-md hover:bg-white/5">
+<span class="material-symbols-outlined">expand_more</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Footer / Pagination -->
+<div class="border-t border-border-dark p-4 bg-[#1a2632] flex items-center justify-between">
+<span class="text-sm text-[#93adc8]">Showing <span class="text-white font-medium">1-5</span> of <span class="text-white font-medium">128</span> logs</span>
+<div class="flex gap-2">
+<button class="flex items-center justify-center gap-1 rounded-lg border border-border-dark bg-[#111921] px-3 py-1.5 text-sm font-medium text-[#93adc8] hover:bg-[#243647] hover:text-white disabled:opacity-50 transition-colors" disabled="">
+<span class="material-symbols-outlined text-[16px]">chevron_left</span>
+                                Previous
+                            </button>
+<button class="flex items-center justify-center gap-1 rounded-lg border border-border-dark bg-[#111921] px-3 py-1.5 text-sm font-medium text-white hover:bg-[#243647] transition-colors">
+                                Next
+                                <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body></html>

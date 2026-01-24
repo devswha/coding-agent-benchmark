@@ -60,24 +60,31 @@ export function Dashboard({ benchmark }: DashboardProps) {
           value={`${passRate.toFixed(1)}%`}
           subtitle={`${benchmark.passedCases} / ${benchmark.totalCases} cases`}
           color={passRate >= 80 ? 'green' : passRate >= 50 ? 'yellow' : 'red'}
+          icon="check_circle"
+          progress={passRate}
+          trend={passRate >= 50 ? { value: '2.4%', direction: 'up' } : undefined}
         />
         <ScoreCard
           title="Total Duration"
           value={`${(benchmark.durationMs / 1000).toFixed(1)}s`}
           subtitle={`Avg: ${(benchmark.avgDurationMs / 1000).toFixed(2)}s per case`}
           color="blue"
+          icon="timer"
         />
         <ScoreCard
           title="Tokens Used"
           value={benchmark.totalTokensUsed.toLocaleString()}
           subtitle={`Avg: ${benchmark.avgTokensPerCase.toLocaleString()} per case`}
           color="purple"
+          icon="token"
         />
         <ScoreCard
           title="Failed Cases"
           value={benchmark.failedCases.toString()}
           subtitle={benchmark.skippedCases > 0 ? `${benchmark.skippedCases} skipped` : 'No skipped cases'}
           color={benchmark.failedCases > 0 ? 'red' : 'green'}
+          icon="error"
+          trend={benchmark.failedCases > 0 ? { value: benchmark.failedCases.toString(), direction: 'down' } : undefined}
         />
       </div>
 
